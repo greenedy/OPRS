@@ -9,6 +9,9 @@ import enums.PropertyType;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+import javax.persistence.Query;
 
 /**
  *
@@ -25,6 +28,14 @@ public class searchProperties implements Serializable {
     private int numberOfOtherRooms;
     private int priceOfRent;
     
+    private Boolean selLocToronto;
+    private Boolean selLocOttawa;
+    private PropertyType selPropType;
+    private int selNumBedrooms;
+    private int selNumBathrooms;
+    private int selNumOtherRooms;
+    private int selRent;
+    
     
     /**
      * Creates a new instance of searchProperties
@@ -33,8 +44,32 @@ public class searchProperties implements Serializable {
         
     }
     
-    public String search() {
-        return "viewProperties";
+    public void search(Boolean locationToronto, Boolean locationOttawa, PropertyType propertyType, int numberOfBedrooms, int numberOfBathrooms, int numberOfOtherRooms, int priceOfRent) {
+        ArrayList<Object> results = new ArrayList<>();
+        if (locationToronto == selLocToronto && locationOttawa == selLocOttawa && propertyType == selPropType && numberOfBedrooms == selNumBedrooms && numberOfBathrooms == selNumBathrooms && numberOfOtherRooms == selNumOtherRooms && priceOfRent == selRent){
+            List<Object[]> obj = findProperties(selLocToronto, selLocOttawa, selPropType, selNumBedrooms, selNumBathrooms, selNumOtherRooms,selRent);
+        }
+    }
+    
+    private List findProperties(Boolean selLocToronto, Boolean selLocOttawa, PropertyType selPropType, int selNumBedrooms, int selNumBathrooms, int selNumOtherRooms,int selRent) {
+        String queryString = "SELECT a FROM PropertyBean";
+        //Query query = em.createQuery(queryString)
+                //.setParameter("minRent", rent)
+                //.setParameter("maxRent", maxRent);
+
+        //return performQuery();
+        return null;
+    }
+    
+    private static List performQuery(final Query query) {
+        List resultList = query.getResultList();
+        if (resultList.isEmpty()) {
+            return null;
+        }
+        ArrayList<Object[]> results;
+        results = new ArrayList<>();
+        results.addAll(resultList);
+        return results;
     }
     
     public PropertyType[] getTypes () {
