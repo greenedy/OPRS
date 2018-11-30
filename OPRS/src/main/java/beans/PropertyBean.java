@@ -63,9 +63,9 @@ public class PropertyBean implements Serializable {
     
     private String owner;
     private String type;
-    private String numTotalRooms;
-    private String numBathrooms;
-    private String numBedrooms;
+    private int numTotalRooms;
+    private int numBathrooms;
+    private int numBedrooms;
     private Date availableDate;
     private String description;
     private String number;
@@ -106,42 +106,42 @@ public class PropertyBean implements Serializable {
     /**
      * @return the numTotalRooms
      */
-    public String getNumTotalRooms() {
+    public int getNumTotalRooms() {
         return numTotalRooms;
     }
 
     /**
      * @param numTotalRooms the numTotalRooms to set
      */
-    public void setNumTotalRooms(String numTotalRooms) {
+    public void setNumTotalRooms(int numTotalRooms) {
         this.numTotalRooms = numTotalRooms;
     }
 
      /**
      * @return the numBathrooms
      */
-    public String getNumBathrooms() {
+    public int getNumBathrooms() {
         return numBathrooms;
     }
 
     /**
      * @param numBathrooms the numBathrooms to set
      */
-    public void setNumBathrooms(String numBathrooms) {
+    public void setNumBathrooms(int numBathrooms) {
         this.numBathrooms = numBathrooms;
     }
     
     /**
      * @return the numBedrooms
      */
-    public String getNumBedrooms() {
+    public int getNumBedrooms() {
         return numBedrooms;
     }
 
     /**
      * @param numBedrooms the numBedrooms to set
      */
-    public void setNumBedrooms(String numBedrooms) {
+    public void setNumBedrooms(int numBedrooms) {
         this.numBedrooms = numBedrooms;
     }
 

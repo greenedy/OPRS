@@ -37,8 +37,7 @@ public class PropertyLookupControl {
     public PropertyLookupControl() {
     }
     public void search() {
-       List<Property> results = new ArrayList();
-       results = PropertyDBHelper.findPropertiesWithCriteria(em, searchProperties);
+       List<Property> results = PropertyDBHelper.findPropertiesWithCriteria(em, searchProperties);
        searchProperties.setLookupResults(results);
     }
 //    public void add() {

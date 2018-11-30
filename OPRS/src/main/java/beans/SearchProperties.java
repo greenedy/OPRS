@@ -11,14 +11,26 @@ import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.util.List;
+import javax.annotation.Resource;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+import persistence.PropertyDBHelper;
+import persistence.PropertyDBHelper;
 
 /**
  *
  * @author Raymo
  */
 @Named(value = "searchProperties")
-@SessionScoped
+@RequestScoped
 public class SearchProperties implements Serializable {
+    @PersistenceContext
+    EntityManager em;
+    @Resource
+    private javax.transaction.UserTransaction utx;
+    
     List<Property> lookupResults;
     private Boolean locationToronto;
     private Boolean locationOttawa;
@@ -37,7 +49,9 @@ public class SearchProperties implements Serializable {
     }
     
     public String search() {
-        return "viewProperties";
+       List<Property> results = PropertyDBHelper.findPropertiesWithCriteria(em, this);
+       setLookupResults(results);
+       return("index");
     }
     
     public void setLookupResults(List<Property> results) {

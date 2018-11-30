@@ -54,37 +54,34 @@ public class Property implements Serializable {
     private int numTotalRooms;
     private int numBathrooms;
     private int numBedrooms;
-//    @Temporal(TemporalType.DATE)
-//    private Date availableDate;
-//    @Lob
-//    private String description;
-//    @OneToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
-//    @JoinColumn(name="PROPERTY_ADDRESS",
-////            referencedColumnName="id")
-//    private Address address;
-//    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, 
-////            mappedBy="property")
-//    private Collection<Image> pictures;
+    @Temporal(TemporalType.DATE)
+    private Date availableDate;
+    @Lob
+    private String description;
+    @OneToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    @JoinColumn(name="PROPERTY_ADDRESS",
+            referencedColumnName="id")
+    private Address address;
+    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, 
+            mappedBy="property")
+    private Collection<Image> pictures;
     
     public Property() {
         
     }
     
-//    public Property(String owner, String type, double priceOfRent, String numTotalRooms, 
-//            String numBathrooms, String numBedrooms, Date availableDate, Address address,
-//            String description) {
-    public Property(String owner, String type, double priceOfRent, int numTotalRooms, 
-            int numBathrooms, int numBedrooms) {
+    public Property(String owner, String type, int numTotalRooms, 
+            int numBathrooms, int numBedrooms, Date availableDate, Address address,
+            String description) {
         this.owner = owner;
         this.type = type;
-        this.priceOfRent = priceOfRent;
         this.numTotalRooms = numTotalRooms;
         this.numBathrooms = numBathrooms;
         this.numBedrooms = numBedrooms;
-//        this.availableDate = availableDate;
-//        this.address = address;
-//        this.description = description;
-//        this.pictures = new ArrayList<>();
+        this.availableDate = availableDate;
+        this.address = address;
+        this.description = description;
+        this.pictures = new ArrayList<>();
     }
     
     public String getId() {
@@ -193,60 +190,60 @@ public class Property implements Serializable {
     /**
      * @return the availableDate
      */
-//    public Date getAvailableDate() {
-//        return availableDate;
-//    }
-//
-//    /**
-//     * @param availableDate the availableDate to set
-//     */
-//    public void setAvailableDate(Date availableDate) {
-//        this.availableDate = availableDate;
-//    }
+    public Date getAvailableDate() {
+      return availableDate;
+    }
 
     /**
-     * @return the description
+     * @param availableDate the availableDate to set
      */
-//    public String getDescription() {
-//        return description;
-//    }
-//
-//    /**
-//     * @param description the description to set
-//     */
-//    public void setDescription(String description) {
-//        this.description = description;
-//    }
+    public void setAvailableDate(Date availableDate) {
+        this.availableDate = availableDate;
+    }
+
+  /**
+   * @return the description
+   */
+    public String getDescription() {
+        return description;
+    }
 
     /**
-     * @return the address
+     * @param description the description to set
      */
-//    public Address getAddress() {
-//        return address;
-//    }
-//
-//    /**
-//     * @param address the address to set
-//     */
-//    public void setAddress(Address address) {
-//        this.address = address;
-//    }
-//
-//    /**
-//     * @return the pictures
-//     */
-//    public Collection<Image> getPictures() {
-//        return pictures;
-//    }
-//
-//    /**
-//     * @param pictures the pictures to set
-//     */
-//    public void setPictures(Collection<Image> pictures) {
-//        this.pictures = pictures;
-//    }
-//
-//    public void addPicture(Image pim) {
-//        this.pictures.add(pim);
-//    }
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+  /**
+   * @return the address
+   */
+    public Address getAddress() {
+        return address;
+    }
+
+    /**
+     * @param address the address to set
+     */
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+
+    /**
+     * @return the pictures
+     */
+    public Collection<Image> getPictures() {
+        return pictures;
+    }
+
+    /**
+     * @param pictures the pictures to set
+     */
+    public void setPictures(Collection<Image> pictures) {
+        this.pictures = pictures;
+    }
+
+    public void addPicture(Image pim) {
+        this.pictures.add(pim);
+    }
 }

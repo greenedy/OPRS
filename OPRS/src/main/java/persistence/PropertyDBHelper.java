@@ -95,19 +95,4 @@ public class PropertyDBHelper {
         return results;
     }
 
-//   public static boolean addUser(EntityManager em, UserTransaction utx, UserData userData) {
-//        try {
-//            utx.begin();
-//            User nuser = new User();
-//            nuser.setUSER_ID(userData.getId());
-//            nuser.setNAME(userData.getName());
-//            nuser.setBIRTHDATE(Date.valueOf(userData.getBirthdate()));
-//            em.persist(nuser);
-//            utx.commit();
-//            return true;
-//        } catch (IllegalArgumentException | NotSupportedException | SystemException | RollbackException | HeuristicMixedException | HeuristicRollbackException | SecurityException | IllegalStateException ex) {
-//            ex.printStackTrace();
-//        }
-//        return false;
-//    }
 }

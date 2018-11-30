@@ -108,15 +108,15 @@ public class Image implements Serializable {
     /**
      * @return the property
      */
-//    public Property getProperty() {
-//        return property;
-//    }
-//
-//    /**
-//     * @param property the user to set
-//     */
-//    public void setProperty(Property property) {
-//        this.property = property;
-//    }
+    public Property getProperty() {
+        return property;
+    }
+
+    /**
+     * @param property the user to set
+     */
+    public void setProperty(Property property) {
+        this.property = property;
+    }
     
 }
