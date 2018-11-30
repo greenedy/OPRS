@@ -44,7 +44,7 @@ public class Property implements Serializable {
         serialVersionUID = aSerialVersionUID;
     }
     @Id
-    private String id;
+    private String propertyId;
     private String owner;
     private String type;
     private double priceOfRent;
@@ -85,17 +85,17 @@ public class Property implements Serializable {
     }
     
     public String getId() {
-        return id;
+        return propertyId;
     }
 
     public void setId(String id) {
-        this.id = id;
+        this.propertyId = id;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (id != null ? id.hashCode() : 0);
+        hash += (propertyId != null ? propertyId.hashCode() : 0);
         return hash;
     }
 
@@ -106,7 +106,7 @@ public class Property implements Serializable {
             return false;
         }
         Property other = (Property) object;
-        if ((this.id == null && other.id != null) || (this.id != null && !this.id.equals(other.id))) {
+        if ((this.propertyId == null && other.propertyId != null) || (this.propertyId != null && !this.propertyId.equals(other.propertyId))) {
             return false;
         }
         return true;
@@ -114,7 +114,7 @@ public class Property implements Serializable {
 
     @Override
     public String toString() {
-        return "model.Property[ propertyId=" + id + " ]";
+        return "model.Property[ propertyId=" + propertyId + " ]";
     }
 
     /**

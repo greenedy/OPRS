@@ -32,7 +32,7 @@ public class Image implements Serializable {
     private String type;
 //    @ManyToOne
 //    @JoinColumn(name="USER_PICTURES",
-//                referencedColumnName="emailId")
+//                referencedColumnName="propertyId")
 //    private Property property;
     
     public Image(){
