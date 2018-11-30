@@ -30,10 +30,10 @@ public class Image implements Serializable {
     @Lob @Column(name="PIC")
     private byte[] contents;
     private String type;
-    @ManyToOne
-    @JoinColumn(name="USER_PICTURES",
-                referencedColumnName="emailId")
-    private Property property;
+//    @ManyToOne
+//    @JoinColumn(name="USER_PICTURES",
+//                referencedColumnName="emailId")
+//    private Property property;
     
     public Image(){
      
@@ -108,15 +108,15 @@ public class Image implements Serializable {
     /**
      * @return the property
      */
-    public Property getProperty() {
-        return property;
-    }
-
-    /**
-     * @param property the user to set
-     */
-    public void setProperty(Property property) {
-        this.property = property;
-    }
+//    public Property getProperty() {
+//        return property;
+//    }
+//
+//    /**
+//     * @param property the user to set
+//     */
+//    public void setProperty(Property property) {
+//        this.property = property;
+//    }
     
 }
