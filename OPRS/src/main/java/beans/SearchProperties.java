@@ -6,9 +6,11 @@
 package beans;
 
 import enums.PropertyType;
+import persistence.Property;
 import javax.inject.Named;
 import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
+import java.util.List;
 
 /**
  *
@@ -16,7 +18,8 @@ import java.io.Serializable;
  */
 @Named(value = "searchProperties")
 @SessionScoped
-public class searchProperties implements Serializable {
+public class SearchProperties implements Serializable {
+    List<Property> lookupResults;
     private Boolean locationToronto;
     private Boolean locationOttawa;
     private PropertyType propertyType;
@@ -29,12 +32,28 @@ public class searchProperties implements Serializable {
     /**
      * Creates a new instance of searchProperties
      */
-    public searchProperties() {
+    public SearchProperties() {
         
     }
     
     public String search() {
         return "viewProperties";
+    }
+    
+    public void setLookupResults(List<Property> results) {
+        this.lookupResults = results;
+    }
+    
+    public List<Property> getLookupResults() {
+        return lookupResults;
+    }
+    // show results if any
+    public boolean getShowResults() {
+        return (lookupResults != null) && !lookupResults.isEmpty();
+    }
+    // show message if no result
+    public boolean getShowMessage() {
+        return (lookupResults != null) && lookupResults.isEmpty();
     }
     
     public PropertyType[] getTypes () {
