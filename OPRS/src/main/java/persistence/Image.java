@@ -31,8 +31,8 @@ public class Image implements Serializable {
     private byte[] contents;
     private String type;
     @ManyToOne
-    @JoinColumn(name="USER_PICTURES",
-                referencedColumnName="emailId")
+    @JoinColumn(name="PROPERTY_PICTURES",
+                referencedColumnName="propertyId")
     private Property property;
     
     public Image(){

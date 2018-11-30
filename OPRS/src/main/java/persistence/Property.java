@@ -12,6 +12,8 @@ import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
@@ -44,6 +46,7 @@ public class Property implements Serializable {
         serialVersionUID = aSerialVersionUID;
     }
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private String propertyId;
     private String owner;
     private String type;
