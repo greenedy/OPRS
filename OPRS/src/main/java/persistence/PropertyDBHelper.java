@@ -57,16 +57,17 @@ public class PropertyDBHelper {
             if(!"".equals(whereClauseConditions)){whereClauseConditions += " AND";} //If a Condition has been added already
             whereClauseConditions += " p.priceOfRent <= :maxRent";
         }
-//        if(searchProperty.getLocationOttawa() || searchProperty.getLocationToronto()){
-//            if(!"".equals(whereClauseConditions)){whereClauseConditions += " AND";} //If a Condition has been added already
-//            if(searchProperty.getLocationOttawa() || searchProperty.getLocationToronto()){
-//                whereClauseConditions += " (p.address.city = :pLocOttawa OR p.address.city = :pLocToronto)";
-//            }else if(searchProperty.getLocationOttawa()){
-//                whereClauseConditions += " p.address.city = :pLocOttawa";
-//            }else{
-//                whereClauseConditions += " p.address.city = :pLocToronto";
-//            } 
-//        }
+        if(searchProperty.getLocationOttawa() || searchProperty.getLocationToronto()){
+            if(!"".equals(whereClauseConditions)){whereClauseConditions += " AND";} //If a Condition has been added already
+            
+            if(searchProperty.getLocationOttawa() && searchProperty.getLocationToronto()){
+                whereClauseConditions += " (p.address.city = :pLocOttawa OR p.address.city = :pLocToronto)";
+            }else if(searchProperty.getLocationOttawa()){
+                whereClauseConditions += " p.address.city = :pLocOttawa";
+            }else{
+                whereClauseConditions += " p.address.city = :pLocToronto";
+            } 
+        }
 
         
         
@@ -92,6 +93,13 @@ public class PropertyDBHelper {
             if(!(0 == searchProperty.getMaxPriceOfRent())){
                 query.setParameter("maxRent", searchProperty.getMaxPriceOfRent());
             }
+            if(searchProperty.getLocationOttawa()){
+                query.setParameter("pLocOttawa", "Ottawa");
+            }
+            if(searchProperty.getLocationToronto()){
+                query.setParameter("pLocToronto", "Toronto");
+            } 
+            
         }else{
             //Select all Properties
             query = em.createQuery("SELECT p FROM Property p");
