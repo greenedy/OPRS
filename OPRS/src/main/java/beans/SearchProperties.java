@@ -34,7 +34,7 @@ public class SearchProperties implements Serializable {
     List<Property> lookupResults;
     private Boolean locationToronto;
     private Boolean locationOttawa;
-    private PropertyType propertyType;
+    private String propertyType;
     private int numberOfBedrooms;
     private int numberOfBathrooms;
     private int numberOfOtherRooms;
@@ -162,14 +162,14 @@ public class SearchProperties implements Serializable {
     /**
      * @return the propertyType
      */
-    public PropertyType getPropertyType() {
+    public String getPropertyType() {
         return propertyType;
     }
 
     /**
      * @param propertyType the propertyType to set
      */
-    public void setPropertyType(PropertyType propertyType) {
+    public void setPropertyType(String propertyType) {
         this.propertyType = propertyType;
     }
     

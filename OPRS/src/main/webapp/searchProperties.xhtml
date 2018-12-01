@@ -16,9 +16,10 @@
                 <h:selectBooleanCheckbox value="#{searchProperties.locationToronto}" />
                 <h:outputText value="Ottawa" escape="false"/>
                 <h:selectBooleanCheckbox value="#{searchProperties.locationOttawa}" />
-                <h:outputText value="Toronto" escape="false"/>
+                <h:outputText value="Property Type" escape="false"/>
                 <h:selectOneMenu value="#{searchProperties.propertyType}">
-                    <f:selectItems value="#{searchProperties.types}"/>
+                    <f:selectItem itemLabel="Apartment" itemValue="APARTMENT"/>
+                    <f:selectItem itemLabel="House" itemValue="HOUSE"/>
                 </h:selectOneMenu>
             </h:panelGrid>
             

@@ -36,6 +36,8 @@ public class PropertyDBHelper {
         Query query;
         
         //Set conditions for the WHERE clause of the Query
+        
+        
         if(!(0 == searchProperty.getNumberOfBathrooms())){ //If the NumberOfBathrooms field was used by the User
             whereClauseConditions += " p.numBathrooms = :bathNum";
         }
@@ -43,6 +45,11 @@ public class PropertyDBHelper {
             if(!"".equals(whereClauseConditions)){whereClauseConditions += " AND";} //If a Condition has been added already
             whereClauseConditions += " p.numBedrooms = :bedNum";
         }
+        if(!("".equals(searchProperty.getPropertyType()))){
+            if(!"".equals(whereClauseConditions)){whereClauseConditions += " AND";} //If a Condition has been added already
+            whereClauseConditions += " p.type = :pType";
+        }
+        
         
         //If there are conditions add the WHERE clause and its conditions 
         if(!"".equals(whereClauseConditions)){
@@ -56,6 +63,9 @@ public class PropertyDBHelper {
             }
             if(!(0 == searchProperty.getNumberOfBedrooms())){
                 query.setParameter("bedNum", searchProperty.getNumberOfBedrooms());
+            }
+            if(!("".equals(searchProperty.getPropertyType()))){
+                query.setParameter("pType", searchProperty.getPropertyType());
             }
         }else{
             //Select all Properties
