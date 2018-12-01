@@ -38,7 +38,8 @@ public class SearchProperties implements Serializable {
     private int numberOfBedrooms;
     private int numberOfBathrooms;
     private int numberOfOtherRooms;
-    private int priceOfRent;
+    private double minPriceOfRent;
+    private double maxPriceOfRent;
     
     
     /**
@@ -145,19 +146,7 @@ public class SearchProperties implements Serializable {
         this.numberOfOtherRooms = numberOfOtherRooms;
     }
 
-    /**
-     * @return the priceOfRent
-     */
-    public int getPriceOfRent() {
-        return priceOfRent;
-    }
 
-    /**
-     * @param priceOfRent the priceOfRent to set
-     */
-    public void setPriceOfRent(int priceOfRent) {
-        this.priceOfRent = priceOfRent;
-    }
 
     /**
      * @return the propertyType
@@ -171,6 +160,34 @@ public class SearchProperties implements Serializable {
      */
     public void setPropertyType(String propertyType) {
         this.propertyType = propertyType;
+    }
+
+    /**
+     * @return the minPriceOfRent
+     */
+    public double getMinPriceOfRent() {
+        return minPriceOfRent;
+    }
+
+    /**
+     * @param minPriceOfRent the minPriceOfRent to set
+     */
+    public void setMinPriceOfRent(double minPriceOfRent) {
+        this.minPriceOfRent = minPriceOfRent;
+    }
+
+    /**
+     * @return the maxPriceOfRent
+     */
+    public double getMaxPriceOfRent() {
+        return maxPriceOfRent;
+    }
+
+    /**
+     * @param maxPriceOfRent the maxPriceOfRent to set
+     */
+    public void setMaxPriceOfRent(double maxPriceOfRent) {
+        this.maxPriceOfRent = maxPriceOfRent;
     }
     
 }

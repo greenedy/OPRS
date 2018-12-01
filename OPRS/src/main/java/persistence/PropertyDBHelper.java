@@ -49,6 +49,25 @@ public class PropertyDBHelper {
             if(!"".equals(whereClauseConditions)){whereClauseConditions += " AND";} //If a Condition has been added already
             whereClauseConditions += " p.type = :pType";
         }
+        if(!(0 == searchProperty.getMinPriceOfRent())){
+            if(!"".equals(whereClauseConditions)){whereClauseConditions += " AND";} //If a Condition has been added already
+            whereClauseConditions += " p.priceOfRent >= :minRent";
+        }
+        if(!(0 == searchProperty.getMaxPriceOfRent())){
+            if(!"".equals(whereClauseConditions)){whereClauseConditions += " AND";} //If a Condition has been added already
+            whereClauseConditions += " p.priceOfRent <= :maxRent";
+        }
+//        if(searchProperty.getLocationOttawa() || searchProperty.getLocationToronto()){
+//            if(!"".equals(whereClauseConditions)){whereClauseConditions += " AND";} //If a Condition has been added already
+//            if(searchProperty.getLocationOttawa() || searchProperty.getLocationToronto()){
+//                whereClauseConditions += " (p.address.city = :pLocOttawa OR p.address.city = :pLocToronto)";
+//            }else if(searchProperty.getLocationOttawa()){
+//                whereClauseConditions += " p.address.city = :pLocOttawa";
+//            }else{
+//                whereClauseConditions += " p.address.city = :pLocToronto";
+//            } 
+//        }
+
         
         
         //If there are conditions add the WHERE clause and its conditions 
@@ -66,6 +85,12 @@ public class PropertyDBHelper {
             }
             if(!("".equals(searchProperty.getPropertyType()))){
                 query.setParameter("pType", searchProperty.getPropertyType());
+            }
+            if(!(0 == searchProperty.getMinPriceOfRent())){
+                query.setParameter("minRent", searchProperty.getMinPriceOfRent());
+            }
+            if(!(0 == searchProperty.getMaxPriceOfRent())){
+                query.setParameter("maxRent", searchProperty.getMaxPriceOfRent());
             }
         }else{
             //Select all Properties

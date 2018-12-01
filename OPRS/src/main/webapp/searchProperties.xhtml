@@ -32,8 +32,10 @@
                 <h:inputText value="#{searchProperties.numberOfBathrooms}" />
                 <h:outputText value="Number of Other Rooms" escape="false"/>
                 <h:inputText value="#{searchProperties.numberOfOtherRooms}" />
-                <h:outputText value="Price Of Rent" escape="false"/>
-                <h:inputText value="#{searchProperties.priceOfRent}" />
+                <h:outputText value="Minimum Price Of Rent" escape="false"/>
+                <h:inputText value="#{searchProperties.minPriceOfRent}" />
+                <h:outputText value="Maximum Price Of Rent" escape="false"/>
+                <h:inputText value="#{searchProperties.maxPriceOfRent}" />
             </h:panelGrid>
                 <hr></hr>
                   <h:commandButton value="Search" action="#{searchProperties.search}"></h:commandButton>
