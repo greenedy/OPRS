@@ -8,15 +8,12 @@ package beans;
 import enums.PropertyType;
 import persistence.Property;
 import javax.inject.Named;
-import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.Resource;
 import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import persistence.PropertyDBHelper;
 import persistence.PropertyDBHelper;
 
 /**

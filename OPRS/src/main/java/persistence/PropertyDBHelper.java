@@ -45,7 +45,7 @@ public class PropertyDBHelper {
             if(!"".equals(whereClauseConditions)){whereClauseConditions += " AND";} //If a Condition has been added already
             whereClauseConditions += " p.numBedrooms = :bedNum";
         }
-        if(!("".equals(searchProperty.getPropertyType()))){
+        if(!(searchProperty.getPropertyType() == null)){
             if(!"".equals(whereClauseConditions)){whereClauseConditions += " AND";} //If a Condition has been added already
             whereClauseConditions += " p.type = :pType";
         }
@@ -84,7 +84,7 @@ public class PropertyDBHelper {
             if(!(0 == searchProperty.getNumberOfBedrooms())){
                 query.setParameter("bedNum", searchProperty.getNumberOfBedrooms());
             }
-            if(!("".equals(searchProperty.getPropertyType()))){
+            if(!(searchProperty.getPropertyType() == null)){
                 query.setParameter("pType", searchProperty.getPropertyType());
             }
             if(!(0 == searchProperty.getMinPriceOfRent())){
