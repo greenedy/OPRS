@@ -10,8 +10,14 @@ import beans.SearchProperties;
 import java.sql.Date;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.annotation.Resource;
+import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
+import javax.servlet.http.HttpSession;
 import javax.transaction.HeuristicMixedException;
 import javax.transaction.HeuristicRollbackException;
 import javax.transaction.NotSupportedException;
@@ -24,42 +30,23 @@ import javax.transaction.UserTransaction;
  * @author Raymond
  */
 public class VisitingListDBHelper {
-    public static Property findProperty(EntityManager em,String id) {
-        Property p = em.find(Property.class, id);
-        return p;
+    
+    
+    public static void addToVisitingList(UserTransaction utx, EntityManager em, String propertyId){
+        HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+        UserAccount user = (UserAccount) session.getAttribute("User");
+        user.addProperty(PropertyDBHelper.findProperty(em, propertyId));
+        merge(user, utx, em);
     }
     
-   
-
-//    public static List findUsersByName(EntityManager em,String name) {
-//        Query query = em.createQuery(
-//                "SELECT u FROM User u" +
-//                " WHERE u.NAME = :userName");
-//        query.setParameter("userName",name);
-//        return performQuery(query);
-//    }
-//    
-//    public static List findUsersByBirthDate(EntityManager em, String sdate) {
-//        try {
-//            Date bdate = Date.valueOf(sdate);
-//            Query query = em.createQuery(
-//                "SELECT u FROM User u" +
-//                " WHERE u.BIRTHDATE = :bdate");
-//            query.setParameter("bdate",bdate);
-//            return performQuery(query);
-//        } catch (IllegalArgumentException e) {
-//        }
-//        return null;
-//    }
-    
-    private static List<Property> performQuery(final Query query) {
-        List<Property> resultList = query.getResultList();
-        if (resultList.isEmpty()) {
-            return null;
-        } 
-        ArrayList<Property> results = new ArrayList<>();
-        results.addAll(resultList);
-        return results;
+    public static void merge(Object object, UserTransaction utx, EntityManager em) {
+        try {
+            utx.begin();
+            em.merge(object);
+            utx.commit();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
     }
 
 }

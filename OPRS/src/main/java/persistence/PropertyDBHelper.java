@@ -107,26 +107,6 @@ public class PropertyDBHelper {
         return performQuery(query);
     }
 
-//    public static List findUsersByName(EntityManager em,String name) {
-//        Query query = em.createQuery(
-//                "SELECT u FROM User u" +
-//                " WHERE u.NAME = :userName");
-//        query.setParameter("userName",name);
-//        return performQuery(query);
-//    }
-//    
-//    public static List findUsersByBirthDate(EntityManager em, String sdate) {
-//        try {
-//            Date bdate = Date.valueOf(sdate);
-//            Query query = em.createQuery(
-//                "SELECT u FROM User u" +
-//                " WHERE u.BIRTHDATE = :bdate");
-//            query.setParameter("bdate",bdate);
-//            return performQuery(query);
-//        } catch (IllegalArgumentException e) {
-//        }
-//        return null;
-//    }
     
     private static List<Property> performQuery(final Query query) {
         List<Property> resultList = query.getResultList();

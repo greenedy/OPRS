@@ -4,18 +4,24 @@
       xmlns:h="http://xmlns.jcp.org/jsf/html"
       xmlns:f="http://xmlns.jcp.org/jsf/core">
     <h:head>
-        <title>Facelet Title</title>
+        <title>Testing Add To Visiting List Use Case</title>
     </h:head>
     <h:body>
+        <h:outputText value="Make sure your firstname shows up in this field otherwise you're not logged in:  " escape="false"/>
+        <h:outputText value="#{sessionScope.User.firstname}" />
         <h:form>
             <h:panelGrid columns="2" >
-                <h:outputText value="id" escape="false"/>
+                <h:outputText value="The propertyId field of the property you would like to add: " escape="false"/>
                 <h:inputText value="#{VisitingListBean.propertyId}" />
             </h:panelGrid>
                 <hr></hr>
-                <h:commandButton value="Search" action="#{VisitingListBean.addToVisitingList}"></h:commandButton>
+                <h:commandButton value="Add" action="#{VisitingListBean.addToVisitingList}"></h:commandButton>
+                
         </h:form>
-        
+        <h:panelGrid columns="2" >
+                <h:outputText value="Element Added Successfully? " escape="false"/>
+                #{VisitingListBean.propertyFound}
+        </h:panelGrid>
     </h:body>
 </html>
 

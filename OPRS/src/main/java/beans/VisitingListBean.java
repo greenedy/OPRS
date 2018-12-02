@@ -5,12 +5,16 @@
  */
 package beans;
 
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -19,6 +23,7 @@ import javax.transaction.Transactional;
 import persistence.UserAccount;
 import persistence.Property;
 import persistence.PropertyDBHelper;
+import persistence.VisitingListDBHelper;
 
 /**
  *
@@ -27,7 +32,34 @@ import persistence.PropertyDBHelper;
 @Named(value = "VisitingListBean")
 @RequestScoped
 public class VisitingListBean {
-
+    private String propertyId;
+    @PersistenceContext
+    EntityManager em;
+    @Resource
+    private javax.transaction.UserTransaction utx;
+    private Boolean propertyFound = false;
+    
+    public String addToVisitingList(){
+        try {
+           VisitingListDBHelper.addToVisitingList(utx, em, propertyId);
+           
+           //Check if the added Property is actually in the UserAccounts properties Set
+           HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+           UserAccount user = (UserAccount) session.getAttribute("User");
+           Set<Property> userProperties = user.getProperties();
+           setPropertyFound((Boolean) userProperties.contains(PropertyDBHelper.findProperty(em, propertyId)));
+           
+           
+        } catch(RuntimeException e) {
+           String msg = "Error While adding Property";
+           FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg));
+           FacesContext.getCurrentInstance().getExternalContext()
+                .getFlash().setKeepMessages(true);
+        }
+        
+        return("addToVisitingList");
+    }
+    
     /**
      * @return the propertyId
      */
@@ -41,34 +73,19 @@ public class VisitingListBean {
     public void setPropertyId(String propertyId) {
         this.propertyId = propertyId;
     }
-    @PersistenceContext
-    EntityManager em;
-    @Resource
-    private javax.transaction.UserTransaction utx;
-    private String propertyId;
+
     /**
-     * Creates a new instance of VisitingListBean
+     * @return the propertyFound
      */
-    public VisitingListBean() {
+    public Boolean getPropertyFound() {
+        return propertyFound;
     }
-    
-    public String addToVisitingList(){
-        HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
-        UserAccount user = (UserAccount) session.getAttribute("User");
-        user.addProperty(PropertyDBHelper.findProperty(em, getPropertyId()));
-        merge(user);
-        return("index");
-    }
-    
-    public void merge(Object object) {
-        try {
-            utx.begin();
-            em.merge(object);
-            utx.commit();
-        } catch (Exception e) {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
-            throw new RuntimeException(e);
-        }
+
+    /**
+     * @param propertyFound the propertyFound to set
+     */
+    public void setPropertyFound(Boolean propertyFound) {
+        this.propertyFound = propertyFound;
     }
     
 }
