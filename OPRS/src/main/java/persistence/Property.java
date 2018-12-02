@@ -9,6 +9,8 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -17,6 +19,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
@@ -65,6 +68,9 @@ public class Property implements Serializable {
     @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, 
             mappedBy="property")
     private Collection<Image> pictures;
+    @ManyToMany(mappedBy = "properties")
+    private Set<UserAccount> users = new HashSet<>();
+    
     
     public Property() {
         
@@ -84,7 +90,7 @@ public class Property implements Serializable {
         this.pictures = new ArrayList<>();
     }
     
-    public String getId() {
+    public String getPropertyId() {
         return propertyId;
     }
 
@@ -245,5 +251,19 @@ public class Property implements Serializable {
 
     public void addPicture(Image pim) {
         this.pictures.add(pim);
+    }
+
+    /**
+     * @return the users
+     */
+    public Set<UserAccount> getUsers() {
+        return users;
+    }
+
+    /**
+     * @param users the users to set
+     */
+    public void setUsers(Set<UserAccount> users) {
+        this.users = users;
     }
 }
