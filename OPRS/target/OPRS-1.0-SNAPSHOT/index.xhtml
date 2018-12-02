@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>OPS Title</title>
+    </h:head>
+    <h:head>
+        <title>OPS Facelet</title>
+    </h:head>
+    <h:body>
+        <f:view>
+            <h:form>
+                <h:panelGrid columns="1">
+                    <h:button value="Public Page" outcome="/public/welcomePublic"/>
+                    <h:button value="Private Page" outcome="/protected/welcomeProtected"/>
+                    <h:button value="Sign In" outcome="signIn"/>
+                    <h:button value="Log In" outcome="login"/>
+                    <h:commandButton action="#{OnlinePropertyRentalSystemBean.searchProperties()}" value="Search Properties" />
+                    <h:commandButton action="#{OnlinePropertyRentalSystemBean.addProperty()}" value="Add Property" />
+                </h:panelGrid>
+            </h:form>
+        </f:view>
+
+    </h:body>
+</html>
+

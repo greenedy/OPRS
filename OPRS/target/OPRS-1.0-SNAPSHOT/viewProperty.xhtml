@@ -1,0 +1,55 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>View Property</title>
+    </h:head>
+    <h:body>
+        <p:tooltip showEvent="focus" hideEvent="blur"  />
+        <p:growl autoUpdate="true"/>
+        <h:form id="form1">
+                    <p:panel id="information" header="Here is the property information">
+                        <h:panelGrid  columns="1">
+                            <h:outputText style="font-weight:bold" value="Type: " />
+                            <h:outputText value="#{PropertyBean.type}"/>
+                            <h:outputText style="font-weight:bold" value="Total number of rooms: " />
+                            <h:outputText value="#{PropertyBean.numTotalRooms}"/>
+                            <h:outputText style="font-weight:bold" value="Number of Bathrooms: " />
+                            <h:outputText value="#{PropertyBean.numBathrooms}"/>
+                            <h:outputText style="font-weight:bold" value="Number of Bedrooms: " />
+                            <h:outputText value="#{PropertyBean.numBedrooms}"/>
+                            <h:outputText style="font-weight:bold" value="Date available: " />
+                            <h:outputText value="#{PropertyBean.availableDate}"/>
+                            <h:panelGroup />
+                            <h:panelGroup />
+                            <h:outputText style="font-weight:bold" value="Number:"/>
+                            <h:outputText value="#{PropertyBean.number}" />
+                            <h:outputText style="font-weight:bold" value="Street:"/>
+                            <h:outputText value="#{PropertyBean.street}" />
+                            <h:outputText style="font-weight:bold" value="Unit:"/>
+                            <h:outputText value="#{PropertyBean.unit}" />
+                            <h:outputText style="font-weight:bold" value="City:"/>
+                            <h:outputText value="#{PropertyBean.city}" />
+                            <h:outputText style="font-weight:bold" value="Province:"/>
+                            <h:outputText value="#{PropertyBean.province}" />
+                            <h:outputText style="font-weight:bold" value="Postal Code:"/>
+                            <h:outputText value="#{PropertyBean.postalCode}" />
+                        </h:panelGrid>
+                        <h:panelGrid  columns="2">
+                            <h:outputText style="font-weight:bold" value="Description: " />
+                            <h:inputTextarea cols="70" rows="10" readonly="true" value="#{PropertyBean.description}" />
+                        </h:panelGrid>
+                        <p:galleria  panelWidth="500" value="#{PropertyBean.imageIds}" var="imageId">
+                            <p:graphicImage value="#{PropertyBean.streamedImage}" width="500" >
+                                <f:param name="id" value="#{imageId}" />
+                            </p:graphicImage>
+                        </p:galleria>
+                    </p:panel>
+        </h:form>
+
+    </h:body>
+</html>

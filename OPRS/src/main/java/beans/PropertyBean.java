@@ -17,6 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.enterprise.context.SessionScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.PhaseId;
@@ -28,6 +29,7 @@ import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
+import persistence.Address;
 import persistence.Property;
 
 
@@ -61,9 +63,9 @@ public class PropertyBean implements Serializable {
     
     private String owner;
     private String type;
-    private String numTotalRooms;
-    private String numBathrooms;
-    private String numBedrooms;
+    private int numTotalRooms;
+    private int numBathrooms;
+    private int numBedrooms;
     private Date availableDate;
     private String description;
     private String number;
@@ -72,6 +74,11 @@ public class PropertyBean implements Serializable {
     private String city;
     private String province;
     private String postalCode;
+    private double rent;
+    @PersistenceContext(unitName = "OPRS_PU")
+    private EntityManager em;
+    @Resource
+    private javax.transaction.UserTransaction utx;
     private Map<String,Image> images;
     
     private List<Property> lookupResults;
@@ -96,46 +103,60 @@ public class PropertyBean implements Serializable {
     public void setType(String type) {
         this.type = type;
     }
+    
+    /**
+     * @return the rent
+     */
+    public double getRent() {
+        return rent;
+    }
+
+    /**
+     * @param rent the rent to set
+     */
+    public void setRent(double rent) {
+        this.rent = rent;
+    }
 
     /**
      * @return the numTotalRooms
      */
-    public String getNumTotalRooms() {
+    public int getNumTotalRooms() {
         return numTotalRooms;
     }
 
     /**
      * @param numTotalRooms the numTotalRooms to set
      */
-    public void setNumTotalRooms(String numTotalRooms) {
+    public void setNumTotalRooms(int numTotalRooms) {
         this.numTotalRooms = numTotalRooms;
     }
 
      /**
      * @return the numBathrooms
      */
-    public String getNumBathrooms() {
+    public int getNumBathrooms() {
         return numBathrooms;
     }
 
     /**
      * @param numBathrooms the numBathrooms to set
      */
-    public void setNumBathrooms(String numBathrooms) {
+    public void setNumBathrooms(int numBathrooms) {
         this.numBathrooms = numBathrooms;
     }
     
     /**
      * @return the numBedrooms
      */
-    public String getNumBedrooms() {
+    public int getNumBedrooms() {
         return numBedrooms;
     }
 
     /**
      * @param numBedrooms the numBedrooms to set
      */
-    public void setNumBedrooms(String numBedrooms) {
+    public void setNumBedrooms(int numBedrooms) {
         this.numBedrooms = numBedrooms;
     }
 
@@ -251,94 +272,119 @@ public class PropertyBean implements Serializable {
         this.postalCode = postalCode;
     }
 
-//    public void handlePropertyPicUpload(FileUploadEvent event) {
-//        UploadedFile uploadedFile = event.getFile();
-//        try {
-//            byte[] contents = IOUtils.toByteArray(uploadedFile.getInputstream()); // uploadedFile.getContents() doesn't work as expected
-//            //byte[] contents = uploadedFile.getContents();
-//            String type = uploadedFile.getContentType();
-//            Image image = new Image(contents, type);
-//            String filename = uploadedFile.getFileName();
-//            images.put(filename, image);
-//        } catch (IOException ex) {
-//            Logger.getLogger(PropertyBean.class.getName()).log(Level.SEVERE, null, ex);
-//        }
-//    }
-//
-//    public StreamedContent getStreamedImage() {
-//        FacesContext context = FacesContext.getCurrentInstance();
-//
-//        if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
-//            return new DefaultStreamedContent();
-//        } else {
-//            String name = context.getExternalContext().getRequestParameterMap().get("id");
-//            Image image = images.get(name);
-//
-//            return new DefaultStreamedContent(
-//                    new ByteArrayInputStream(image.getContents()), image.getType());
-//        }
-//    }
-//
-//    /**
-//     * @return the imageIds
-//     */
-//    public Collection<String> getImageIds() {
-//        return images.keySet();
-//    }
+    public void handlePropertyPicUpload(FileUploadEvent event) {
+        UploadedFile uploadedFile = event.getFile();
+        try {
+            byte[] contents = IOUtils.toByteArray(uploadedFile.getInputstream()); // uploadedFile.getContents() doesn't work as expected
+            //byte[] contents = uploadedFile.getContents();
+            String type = uploadedFile.getContentType();
+            Image image = new Image(contents, type);
+            String filename = uploadedFile.getFileName();
+            images.put(filename, image);
+        } catch (IOException ex) {
+            Logger.getLogger(PropertyBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public StreamedContent getStreamedImage() {
+        FacesContext context = FacesContext.getCurrentInstance();
+
+        if (context.getCurrentPhaseId() == PhaseId.RENDER_RESPONSE) {
+            return new DefaultStreamedContent();
+        } else {
+            String name = context.getExternalContext().getRequestParameterMap().get("id");
+            Image image = images.get(name);
+
+            return new DefaultStreamedContent(
+                    new ByteArrayInputStream(image.getContents()), image.getType());
+        }
+    }
+
+    /**
+     * @return the imageIds
+     */
+    public Collection<String> getImageIds() {
+        return images.keySet();
+    }
 
     /**
      * Add the user to the database
      * @param actionEvent
      * @return 
      */
-//    public String doAddProperty(ActionEvent actionEvent) {
-//        Address address = new Address(number, street, unit, city, province, postalCode);
-//        Property property = new Property(owner, type, numTotalRooms, numBathrooms, numBedrooms, availableDate, address, description);
-//        for (Image p: images.values()) {
-//            persistence.Image pim = new persistence.Image(p.getContents(),p.getType());
-//            pim.setUser(profile);
-//            profile.addPicture(pim);
-//        }
-//        try {
-//           persist(profile); 
-//           String msg = "Property Created Successfully";
-//           FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg));
-//           FacesContext.getCurrentInstance().getExternalContext()
-//                .getFlash().setKeepMessages(true);
-//           FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-//           FacesContext.getCurrentInstance().getViewRoot().getViewMap().clear();
-//        } catch(RuntimeException e) {
-//           String msg = "Error While Creating Property";
-//           FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg));
-//           FacesContext.getCurrentInstance().getExternalContext()
-//                .getFlash().setKeepMessages(true);
-//        }
-//        return null;
-//    }
+    public String doAddProperty(ActionEvent actionEvent) {
+        Address address = new Address(number, street, unit, city, province, postalCode);
+        Property property = new Property(owner, type, numTotalRooms, numBathrooms, numBedrooms, availableDate, address, description);
+        for (Image p: images.values()) {
+            persistence.Image pim = new persistence.Image(p.getContents(),p.getType());
+            pim.setProperty(property);
+            property.addPicture(pim);
+        }
+        try {
+           persist(property); 
+           String msg = "Property Created Successfully";
+           FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg));
+           FacesContext.getCurrentInstance().getExternalContext()
+                .getFlash().setKeepMessages(true);
+           FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+           FacesContext.getCurrentInstance().getViewRoot().getViewMap().clear();
+        } catch(RuntimeException e) {
+           String msg = "Error While Creating Property";
+           FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg));
+           FacesContext.getCurrentInstance().getExternalContext()
+                .getFlash().setKeepMessages(true);
+        }
+        return null;
+    }
+    
+       public String doUpdateProperty(ActionEvent actionEvent) {
+        Address address = new Address(number, street, unit, city, province, postalCode);
+        Property property = new Property(owner, type, numTotalRooms, numBathrooms, numBedrooms, availableDate, address, description);
+        for (Image p: images.values()) {
+            persistence.Image pim = new persistence.Image(p.getContents(),p.getType());
+            pim.setProperty(property);
+            property.addPicture(pim);
+        }
+        try {
+           persist(property); 
+           String msg = "Property Updated Successfully";
+           FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg));
+           FacesContext.getCurrentInstance().getExternalContext()
+                .getFlash().setKeepMessages(true);
+           FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+           FacesContext.getCurrentInstance().getViewRoot().getViewMap().clear();
+        } catch(RuntimeException e) {
+           String msg = "Error While Updating Property";
+           FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg));
+           FacesContext.getCurrentInstance().getExternalContext()
+                .getFlash().setKeepMessages(true);
+        }
+        return null;
+    }
 
-//    public void persist(Object object) {
-//        try {
-//            utx.begin();
-//            em.persist(object);
-//            utx.commit();
-//        } catch (Exception e) {
-//            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
-//            throw new RuntimeException(e);
-//        }
-//    }
-//    
-//    
-//    public void setLookupResults(List<Property> results) {
-//        this.lookupResults = results;
-//    }
-//    
-//    public List<Property> getLookupResults() {
-//        return lookupResults;
-//    }
-//    // show results if any
-//    public boolean getShowResults() {
-//        return (lookupResults != null) && !lookupResults.isEmpty();
-//    }
-//    
+    public void persist(Object object) {
+        try {
+            utx.begin();
+            em.persist(object);
+            utx.commit();
+        } catch (Exception e) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
+            throw new RuntimeException(e);
+        }
+    }
+    
+    
+    public void setLookupResults(List<Property> results) {
+        this.lookupResults = results;
+    }
+    
+    public List<Property> getLookupResults() {
+        return lookupResults;
+    }
+    // show results if any
+    public boolean getShowResults() {
+        return (lookupResults != null) && !lookupResults.isEmpty();
+    }
+    
 
 }

@@ -12,6 +12,8 @@ import java.util.Date;
 import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Lob;
@@ -44,12 +46,14 @@ public class Property implements Serializable {
         serialVersionUID = aSerialVersionUID;
     }
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private String propertyId;
     private String owner;
     private String type;
-    private String numTotalRooms;
-    private String numBathrooms;
-    private String numBedrooms;
+    private double priceOfRent;
+    private int numTotalRooms;
+    private int numBathrooms;
+    private int numBedrooms;
     @Temporal(TemporalType.DATE)
     private Date availableDate;
     @Lob
@@ -66,8 +70,8 @@ public class Property implements Serializable {
         
     }
     
-    public Property(String owner, String type, String numTotalRooms, 
-            String numBathrooms, String numBedrooms, Date availableDate, Address address,
+    public Property(String owner, String type, int numTotalRooms, 
+            int numBathrooms, int numBedrooms, Date availableDate, Address address,
             String description) {
         this.owner = owner;
         this.type = type;
@@ -80,12 +84,12 @@ public class Property implements Serializable {
         this.pictures = new ArrayList<>();
     }
     
-    public String getPropertyId() {
+    public String getId() {
         return propertyId;
     }
 
-    public void setPropertyId(String propertyId) {
-        this.propertyId = propertyId;
+    public void setId(String id) {
+        this.propertyId = id;
     }
 
     @Override
@@ -144,42 +148,42 @@ public class Property implements Serializable {
     /**
      * @return the numTotalRooms
      */
-    public String getNumTotalRooms() {
+    public int getNumTotalRooms() {
         return numTotalRooms;
     }
 
     /**
      * @param numTotalRooms the numTotalRooms to set
      */
-    public void setNumTotalRooms(String numTotalRooms) {
+    public void setNumTotalRooms(int numTotalRooms) {
         this.numTotalRooms = numTotalRooms;
     }
 
     /**
      * @return the numBathrooms
      */
-    public String getNumBathrooms() {
+    public int getNumBathrooms() {
         return numBathrooms;
     }
 
     /**
      * @param numBathrooms the numBathrooms to set
      */
-    public void setNumBathrooms(String numBathrooms) {
+    public void setNumBathrooms(int numBathrooms) {
         this.numBathrooms = numBathrooms;
     }
     
     /**
      * @return the numBedrooms
      */
-    public String getNumBedrooms() {
+    public int getNumBedrooms() {
         return numBedrooms;
     }
 
     /**
      * @param numBedrooms the numBedrooms to set
      */
-    public void setNumBedrooms(String numBedrooms) {
+    public void setNumBedrooms(int numBedrooms) {
         this.numBedrooms = numBedrooms;
     }
 
@@ -187,7 +191,7 @@ public class Property implements Serializable {
      * @return the availableDate
      */
     public Date getAvailableDate() {
-        return availableDate;
+      return availableDate;
     }
 
     /**
@@ -197,9 +201,9 @@ public class Property implements Serializable {
         this.availableDate = availableDate;
     }
 
-    /**
-     * @return the description
-     */
+  /**
+   * @return the description
+   */
     public String getDescription() {
         return description;
     }
@@ -211,9 +215,9 @@ public class Property implements Serializable {
         this.description = description;
     }
 
-    /**
-     * @return the address
-     */
+  /**
+   * @return the address
+   */
     public Address getAddress() {
         return address;
     }

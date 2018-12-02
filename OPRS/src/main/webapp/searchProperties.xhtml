@@ -2,40 +2,103 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
-        <title>Search for a Property</title>
+        <title>Search Properties</title>
     </h:head>
     <h:body>
         <h:form>
+            <h:commandLink action="#{searchProperties.displayOwnerProp}" value="Add to Visiting List"/>
             <h:outputText value="Search Properties" escape="false"/>
             <hr></hr>
             <h:outputText value="Locations and Property Type" escape="false"/>
             <h:panelGrid columns="2" >
                 <h:outputText value="Toronto" escape="false"/>
-                <h:selectBooleanCheckbox id="selLocToronto" value="#{searchProperties.locationToronto}" />
+                <h:selectBooleanCheckbox value="#{searchProperties.locationToronto}" />
                 <h:outputText value="Ottawa" escape="false"/>
-                <h:selectBooleanCheckbox id="selLocOttawa" value="#{searchProperties.locationOttawa}" />
+                <h:selectBooleanCheckbox value="#{searchProperties.locationOttawa}" />
                 <h:outputText value="Property Type" escape="false"/>
                 <h:selectOneMenu value="#{searchProperties.propertyType}">
-                    <f:selectItems id="selPropType" value="#{searchProperties.types}"/>
+                    <f:selectItem itemLabel="Apartment" itemValue="Apartment"/>
+                    <f:selectItem itemLabel="House" itemValue="House"/>
                 </h:selectOneMenu>
             </h:panelGrid>
             
             <hr></hr>
             <h:outputText value="Rooms and Rent" escape="false"/>
             <h:panelGrid columns="2" >
+                <h:outputText value="Owner" escape="false"/>
+                <h:inputText value="#{searchProperties.owner}" />
                 <h:outputText value="Number of Bedrooms" escape="false"/>
-                <h:inputText id="selNumBedrooms" value="#{searchProperties.numberOfBedrooms}" />
+                <h:inputText value="#{searchProperties.numberOfBedrooms}" />
                 <h:outputText value="Number of Bathrooms" escape="false"/>
-                <h:inputText id="selNumBathrooms" value="#{searchProperties.numberOfBathrooms}" />
+                <h:inputText value="#{searchProperties.numberOfBathrooms}" />
                 <h:outputText value="Number of Other Rooms" escape="false"/>
-                <h:inputText id="selNumOtherRooms" value="#{searchProperties.numberOfOtherRooms}" />
-                <h:outputText value="Price Of Rent" escape="false"/>
-                <h:inputText id="selRent" value="#{searchProperties.priceOfRent}" />
+                <h:inputText value="#{searchProperties.numberOfOtherRooms}" />
+                <h:outputText value="Minimum Price Of Rent" escape="false"/>
+                <h:inputText value="#{searchProperties.minPriceOfRent}" />
+                <h:outputText value="Maximum Price Of Rent" escape="false"/>
+                <h:inputText value="#{searchProperties.maxPriceOfRent}" />
             </h:panelGrid>
                 <hr></hr>
                   <h:commandButton value="Search" action="#{searchProperties.search}"></h:commandButton>
+                 
+                  <!--results-->
+                <div>
+                    <hr/>
+                    <h:panelGroup id="results">
+                        <h:dataTable border="1" id="resultTable" value="#{PropertyBean.lookupResults}" var="propToBeAdded">
+                            <h:column>
+                                <f:facet name="header">Property Type</f:facet>
+                                    #{propToBeAdded.PropertyBean.type}
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Address</f:facet>
+                                    #{propToBeAdded.PropertyBean.number + PropertyBean.street + PropertyBean.unit}
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Location</f:facet>
+                                    #{propToBeAdded.PropertyBean.city}
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Number of Bedrooms</f:facet>
+                                    #{propToBeAdded.PropertyBean.numBedrooms}
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Number of Bathrooms</f:facet>
+                                    #{propToBeAdded.PropertyBean.numBathrooms}
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Number of Other Rooms</f:facet>
+                                    #{propToBeAdded.PropertyBean.numTotalRooms - PropertyBean.numBathrooms - PropertyBean.numBedrooms}
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Rent</f:facet>
+                                    #{propToBeAdded.PropertyBean.rent}
+                            </h:column>
+                            <h:column>
+                                <f:facet name="header">Pictures</f:facet>
+                                    <p:galleria  panelWidth="500" value="#{propToBeAdded.PropertyBean.imageIds}" var="imageId">
+                                        <p:graphicImage value="#{propToBeAdded.PropertyBean.streamedImage}" width="500" >
+                                            <f:param name="id" value="#{imageId}" />
+                                        </p:graphicImage>
+                                    </p:galleria>
+                            </h:column>
+                            
+                        <h:column>
+                            <f:facet name="header">Add to Visiting List</f:facet>
+                            
+                            <!--visitBean should be your "Add to Visiting List Bean"-->
+                            <h:commandLink action="#{visitBean.addToVisitingList(propToBeAdded)}" value="Add to Visiting List"/>
+                        </h:column>
+
+                        </h:dataTable>
+                        
+                    </h:panelGroup>
+                </div>
         </h:form>
     </h:body>
 </html>
