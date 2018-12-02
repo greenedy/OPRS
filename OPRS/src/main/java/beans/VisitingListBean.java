@@ -5,21 +5,15 @@
  */
 package beans;
 
-import java.util.Iterator;
-import java.util.List;
 import java.util.Set;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.servlet.http.HttpSession;
-import javax.transaction.Transactional;
 import persistence.UserAccount;
 import persistence.Property;
 import persistence.PropertyDBHelper;
@@ -33,7 +27,7 @@ import persistence.VisitingListDBHelper;
 @RequestScoped
 public class VisitingListBean {
     private String propertyId;
-    @PersistenceContext
+    @PersistenceContext(unitName = "OPRS-PU")
     EntityManager em;
     @Resource
     private javax.transaction.UserTransaction utx;
