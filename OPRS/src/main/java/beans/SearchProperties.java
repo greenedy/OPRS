@@ -5,7 +5,6 @@
  */
 package beans;
 
-import enums.PropertyType;
 import persistence.Property;
 import javax.inject.Named;
 import java.io.Serializable;
@@ -68,9 +67,6 @@ public class SearchProperties implements Serializable {
         return (lookupResults != null) && lookupResults.isEmpty();
     }
     
-    public PropertyType[] getTypes () {
-        return PropertyType.values();
-    }
     
     /**
      * @return the locationToronto
