@@ -5,7 +5,6 @@
  */
 package beans;
 
-import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.annotation.Resource;
 import javax.inject.Named;
@@ -30,27 +29,23 @@ public class ViewAccount {
     private String lastname;
     private String birthDate;
     private String city;    
-    @PersistenceContext(unitName = "OPRS-PU")
-    private EntityManager em;
-    @Resource
-    private UserTransaction utx;
+    private boolean showAccount = false;
+    private boolean showError = false;
     /**
      * Creates a new instance of ViewAccount
      */
     public ViewAccount() {
     }
-    Logger log = Logger.getLogger(ViewAccount.class.getName());
     @PostConstruct
     private void init() {
         HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
         UserAccount user = (UserAccount)session.getAttribute("User");
-        log.info("RUNNING");
         if (user ==null) {
-            log.info("RUNNING2");
+            showError = true;
 
             status = "Please login to view account.";
         } else {
-            log.info("RUNNING3");
+            showAccount = true;
 
             userId = user.getUserId();
             firstname = user.getFirstname();
@@ -143,5 +138,22 @@ public class ViewAccount {
     public void setStatus(String status) {
         this.status = status;
     }
+    
+    /**
+     * 
+     * @return showAccount
+     */
+    public boolean isShowAccount() {
+        return showAccount;
+    }
+
+    /**
+     * 
+     * @return showError
+     */
+    public boolean isShowError() {
+        return showError;
+    }
+   
     
 }

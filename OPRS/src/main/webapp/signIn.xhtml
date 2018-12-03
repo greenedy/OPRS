@@ -13,10 +13,19 @@
                 <f:view>
                     <h:form>
                     <h:panelGrid columns="3">
-                    <h:outputText value="User Id"></h:outputText>
-                    <h:inputText id="id" value="#{signInBean.userId}" required="true" requiredMessage="Please enter User Id">
+                    <h:outputText value="Username"></h:outputText>
+                    <h:inputText id="id" value="#{signInBean.userId}" required="true" requiredMessage="Please enter Username">
                     </h:inputText>
                     <h:message id="idMsg" for="id" errorStyle="color:red; display:block"/>
+                    
+                    <h:outputText value="User Type"></h:outputText>
+                    <h:selectOneListbox id="type" value="#{signInBean.userType}" required="true" requiredMessage="Please enter User Type">
+                        <f:selectItem itemValue = "agent" itemLabel = "Agent" /> 
+                        <f:selectItem itemValue = "customer" itemLabel = "Customer" /> 
+                        <f:selectItem itemValue = "owner" itemLabel = "Owner" />
+                    </h:selectOneListbox>
+                    <h:message id="idType" for="id" errorStyle="color:red; display:block"/>
+                    
                     <h:outputText value="First Name"></h:outputText>
                     <h:inputText id="fname" value="#{signInBean.firstname}" required="true" requiredMessage="Please enter First Name">
                     </h:inputText>

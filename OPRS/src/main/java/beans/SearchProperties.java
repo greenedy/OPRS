@@ -5,18 +5,14 @@
  */
 package beans;
 
-import enums.PropertyType;
 import persistence.Property;
 import javax.inject.Named;
-import javax.enterprise.context.SessionScoped;
 import java.io.Serializable;
 import java.util.List;
 import javax.annotation.Resource;
 import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import persistence.PropertyDBHelper;
 import persistence.PropertyDBHelper;
 
 /**
@@ -26,7 +22,7 @@ import persistence.PropertyDBHelper;
 @Named(value = "searchProperties")
 @RequestScoped
 public class SearchProperties implements Serializable {
-    @PersistenceContext
+    @PersistenceContext(unitName = "OPRS-PU")
     EntityManager em;
     @Resource
     private javax.transaction.UserTransaction utx;
@@ -34,11 +30,12 @@ public class SearchProperties implements Serializable {
     List<Property> lookupResults;
     private Boolean locationToronto;
     private Boolean locationOttawa;
-    private PropertyType propertyType;
+    private String propertyType;
     private int numberOfBedrooms;
     private int numberOfBathrooms;
     private int numberOfOtherRooms;
-    private int priceOfRent;
+    private double minPriceOfRent;
+    private double maxPriceOfRent;
     
     
     /**
@@ -70,9 +67,6 @@ public class SearchProperties implements Serializable {
         return (lookupResults != null) && lookupResults.isEmpty();
     }
     
-    public PropertyType[] getTypes () {
-        return PropertyType.values();
-    }
     
     /**
      * @return the locationToronto
@@ -145,32 +139,48 @@ public class SearchProperties implements Serializable {
         this.numberOfOtherRooms = numberOfOtherRooms;
     }
 
-    /**
-     * @return the priceOfRent
-     */
-    public int getPriceOfRent() {
-        return priceOfRent;
-    }
 
-    /**
-     * @param priceOfRent the priceOfRent to set
-     */
-    public void setPriceOfRent(int priceOfRent) {
-        this.priceOfRent = priceOfRent;
-    }
 
     /**
      * @return the propertyType
      */
-    public PropertyType getPropertyType() {
+    public String getPropertyType() {
         return propertyType;
     }
 
     /**
      * @param propertyType the propertyType to set
      */
-    public void setPropertyType(PropertyType propertyType) {
+    public void setPropertyType(String propertyType) {
         this.propertyType = propertyType;
+    }
+
+    /**
+     * @return the minPriceOfRent
+     */
+    public double getMinPriceOfRent() {
+        return minPriceOfRent;
+    }
+
+    /**
+     * @param minPriceOfRent the minPriceOfRent to set
+     */
+    public void setMinPriceOfRent(double minPriceOfRent) {
+        this.minPriceOfRent = minPriceOfRent;
+    }
+
+    /**
+     * @return the maxPriceOfRent
+     */
+    public double getMaxPriceOfRent() {
+        return maxPriceOfRent;
+    }
+
+    /**
+     * @param maxPriceOfRent the maxPriceOfRent to set
+     */
+    public void setMaxPriceOfRent(double maxPriceOfRent) {
+        this.maxPriceOfRent = maxPriceOfRent;
     }
     
 }

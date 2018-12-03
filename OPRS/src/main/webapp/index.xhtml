@@ -9,21 +9,30 @@
     <h:head>
         <title>OPS Facelet</title>
     </h:head>
+
+    <center>
     <h:body>
         <f:view>
+            <h:graphicImage value="/graphics/banner.png"/>
             <h:form>
-                <h:panelGrid columns="1">
+                <h:panelGrid columns="7">
                     <h:button value="Public Page" outcome="/public/welcomePublic"/>
                     <h:button value="Private Page" outcome="/protected/welcomeProtected"/>
-                    <h:button value="Sign In" outcome="signIn"/>
+                    <h:button value="Create Account" outcome="signIn"/>
                     <h:button value="Log In" outcome="login"/>
+<<<<<<< HEAD
                         <h:button value="View Account" outcome="viewAccount"/>
+=======
+                    <h:button value="Testing Add To Visiting List Use Case" outcome="addToVisitingList"/>
+>>>>>>> dde8b8f277d81fd0ebc89c0869ce302a95c6762a
                     <h:commandButton action="#{OnlinePropertyRentalSystemBean.searchProperties()}" value="Search Properties" />
                     <h:commandButton action="#{OnlinePropertyRentalSystemBean.addProperty()}" value="Add Property" />
+
                 </h:panelGrid>
             </h:form>
+            <h:graphicImage value="/graphics/home.png"/>
         </f:view>
-
     </h:body>
+    </center>
 </html>
 

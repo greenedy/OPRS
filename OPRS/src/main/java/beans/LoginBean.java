@@ -91,12 +91,15 @@ public class LoginBean {
                      HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
                      session.setAttribute("User", acc);
                      status="Login Successful - " + "Welcome " + acc.getFirstname(); 
+                     
                  } else {
                     status="Invalid Login, Please Try again"; 
                  }
              } catch (UnsupportedEncodingException | NoSuchAlgorithmException ex) {
                  Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
              }
+             
+             
          } else {
              status="Invalid Login, Please Try again";
          }

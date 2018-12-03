@@ -1,0 +1,28 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core">
+    <h:head>
+        <title>Testing Add To Visiting List Use Case</title>
+    </h:head>
+    <h:body>
+        <h:outputText value="Make sure your firstname shows up in this field otherwise you're not logged in:  " escape="false"/>
+        <h:outputText value="#{sessionScope.User.firstname}" />
+        <h:form>
+            <h:panelGrid columns="2" >
+                <h:outputText value="The propertyId field of the property you would like to add: " escape="false"/>
+                <h:inputText value="#{VisitingListBean.propertyId}" />
+            </h:panelGrid>
+                <hr></hr>
+                <h:commandButton value="Add" action="#{VisitingListBean.addToVisitingList}"></h:commandButton>
+                
+        </h:form>
+        <h:panelGrid columns="2" >
+                <h:outputText value="Element Added Successfully? " escape="false"/>
+                #{VisitingListBean.propertyFound}
+        </h:panelGrid>
+    </h:body>
+</html>
+
+

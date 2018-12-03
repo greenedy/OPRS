@@ -10,28 +10,27 @@
                   
         
                 <h1>View Account.</h1>
+                <div  style="display:#{(viewAccountBean.showAccount)?'block': 'none'}">
                 <f:view>
                     <h:form>
-                    <h:panelGrid columns="3">
-                        <h:outputText value="User Id"></h:outputText>
+                    <h:panelGrid columns="2">
+                        <h:outputText value="User Id:"></h:outputText>
                         <h:outputText id="id" value="#{viewAccountBean.userId}"></h:outputText>
-                        <h:outputText value="First Name"></h:outputText>
+                        <h:outputText value="First Name:"></h:outputText>
                         <h:outputText id="fname" value="#{viewAccountBean.firstname}"></h:outputText>
-                        <h:outputText value="Last Name"></h:outputText>
+                        <h:outputText value="Last Name:"></h:outputText>
                         <h:outputText id="lname" value="#{viewAccountBean.lastname}"></h:outputText>
-                        <h:outputText value="Birth Date"></h:outputText>
+                        <h:outputText value="Birth Date:"></h:outputText>
                         <h:outputText id="birthdate" value="#{viewAccountBean.birthDate}"></h:outputText>
-                        <h:outputText value="City"></h:outputText>
+                        <h:outputText value="City:"></h:outputText>
                         <h:outputText id="city" value="#{viewAccountBean.city}"></h:outputText>
                     </h:panelGrid>
-                
-                        <div>
-                            <hr/>
-                            <hr/>
-                        <h:outputText  style="color:royalblue; font-size: large; font-weight: bold" id="status" value="#{viewAccountBean.status}"/>
-                        </div>
-                   </h:form>
+                    </h:form>
                 </f:view>
+                </div>
+                <div style="display:#{(viewAccountBean.showError)?'block': 'none'}">
+                    <h:outputText  style="color:royalblue; font-size: large; font-weight: bold" id="status" value="#{viewAccountBean.status}"/>
+                </div>
 
 
     </body>

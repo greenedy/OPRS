@@ -8,9 +8,15 @@ package persistence;
 
 import java.io.Serializable;
 import java.sql.Date;
+import java.util.HashSet;
+import java.util.Set;
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.Lob;
+import javax.persistence.ManyToMany;
 
 /**
  *
@@ -35,6 +41,7 @@ public class UserAccount implements Serializable {
     }
     @Id
     private String userId;
+    private String userType;
     private String firstname;
     private String lastname;
     private Date birthDate;
@@ -43,9 +50,33 @@ public class UserAccount implements Serializable {
     private byte[] password; // salted + hashed password
     @Lob
     private byte[] salt; // the salt used for this account
+    
+    @ManyToMany(cascade = { 
+        CascadeType.PERSIST, 
+        CascadeType.MERGE
+    })
+    @JoinTable(name = "UserAccount_Property",
+        joinColumns = @JoinColumn(name = "userId"),
+        inverseJoinColumns = @JoinColumn(name = "propertyId")
+    )
+    private Set<Property> properties = new HashSet<>();
+    
+    public void addProperty(Property property){
+        properties.add(property);
+        property.getUsers().add(this);
+    } 
+    
+    public void removeProperty(Property property){
+        properties.remove(property);
+        property.getUsers().remove(this);
+    } 
 
     public String getUserId() {
         return userId;
+    }
+    
+    public String getUserType() {
+        return userType;
     }
 
 
@@ -79,6 +110,10 @@ public class UserAccount implements Serializable {
      */
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+    
+     public void setUserType(String userType) {
+        this.userType = userType;
     }
 
     /**
@@ -163,6 +198,20 @@ public class UserAccount implements Serializable {
      */
     public void setSalt(byte[] salt) {
         this.salt = salt;
+    }
+
+    /**
+     * @return the visitingList
+     */
+    public Set getProperties() {
+        return properties;
+    }
+
+    /**
+     * @param visitingList the visitingList to set
+     */
+    public void setProperties(Set properties) {
+        this.properties = properties;
     }
     
 }
