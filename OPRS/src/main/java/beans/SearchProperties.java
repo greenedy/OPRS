@@ -22,7 +22,7 @@ import persistence.PropertyDBHelper;
 @Named(value = "searchProperties")
 @RequestScoped
 public class SearchProperties implements Serializable {
-    @PersistenceContext
+    @PersistenceContext(unitName = "OPRS-PU")
     EntityManager em;
     @Resource
     private javax.transaction.UserTransaction utx;

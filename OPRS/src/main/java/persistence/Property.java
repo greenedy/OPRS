@@ -266,4 +266,18 @@ public class Property implements Serializable {
     public void setUsers(Set<UserAccount> users) {
         this.users = users;
     }
+
+    /**
+     * @return the priceOfRent
+     */
+    public double getPriceOfRent() {
+        return priceOfRent;
+    }
+
+    /**
+     * @param priceOfRent the priceOfRent to set
+     */
+    public void setPriceOfRent(double priceOfRent) {
+        this.priceOfRent = priceOfRent;
+    }
 }
