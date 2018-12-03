@@ -46,6 +46,7 @@ public class UserAccount implements Serializable {
     }
     @Id
     private String userId;
+    private String userType;
     private String firstname;
     private String lastname;
     private Date birthDate;
@@ -77,6 +78,10 @@ public class UserAccount implements Serializable {
 
     public String getUserId() {
         return userId;
+    }
+    
+    public String getUserType() {
+        return userType;
     }
 
 
@@ -110,6 +115,10 @@ public class UserAccount implements Serializable {
      */
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+    
+     public void setUserType(String userType) {
+        this.userType = userType;
     }
 
     /**

@@ -29,6 +29,7 @@ import persistence.UserAccount;
 @RequestScoped
 public class SignInBean {
     private String userId;
+    private String userType;
     private String firstname;
     private String lastname;
     private String birthDate;
@@ -58,6 +59,20 @@ public class SignInBean {
      */
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+    
+    /**
+     * @return the userId
+     */
+    public String getuserType() {
+        return userType;
+    }
+
+    /**
+     * @param userId the userId to set
+     */
+    public void setuserType(String userType) {
+        this.userType = userType;
     }
 
     /**
@@ -152,6 +167,7 @@ public class SignInBean {
         try {
             UserAccount acc = new UserAccount();
             acc.setUserId(userId);
+            acc.setUserType(userType);
             acc.setFirstname(firstname);
             acc.setLastname(lastname);
             acc.setCity(city);
@@ -168,7 +184,7 @@ public class SignInBean {
             acc.setSalt(salt);
             acc.setPassword(passhash);
             persist(acc);
-            status="New Account Created Fine";
+            status="New Account was Successfully Created";
         } catch (UnsupportedEncodingException | NoSuchAlgorithmException | RuntimeException ex ) {
             Logger.getLogger(SignInBean.class.getName()).log(Level.SEVERE, null, ex);
             status="Error While Creating New Account";
