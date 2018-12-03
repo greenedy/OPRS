@@ -6,6 +6,7 @@
 
 package persistence;
 
+import enums.UserType;
 import java.io.Serializable;
 import java.sql.Date;
 import java.util.HashSet;
@@ -41,7 +42,7 @@ public class UserAccount implements Serializable {
     }
     @Id
     private String userId;
-    private String userType;
+    private UserType userType;
     private String firstname;
     private String lastname;
     private Date birthDate;
@@ -75,7 +76,7 @@ public class UserAccount implements Serializable {
         return userId;
     }
     
-    public String getUserType() {
+    public UserType getUserType() {
         return userType;
     }
 
@@ -112,7 +113,7 @@ public class UserAccount implements Serializable {
         this.userId = userId;
     }
     
-     public void setUserType(String userType) {
+     public void setUserType(UserType userType) {
         this.userType = userType;
     }
 

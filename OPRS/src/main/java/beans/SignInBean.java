@@ -6,6 +6,7 @@
 
 package beans;
 
+import enums.UserType;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -16,9 +17,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.servlet.http.HttpSession;
 import persistence.UserAccount;
 
 /**
@@ -29,7 +32,15 @@ import persistence.UserAccount;
 @RequestScoped
 public class SignInBean {
     private String userId;
-    private String userType;
+    private UserType userType;
+
+    public UserType getUserType() {
+        return userType;
+    }
+
+    public void setUserType(UserType userType) {
+        this.userType = userType;
+    }
     private String firstname;
     private String lastname;
     private String birthDate;
@@ -61,18 +72,8 @@ public class SignInBean {
         this.userId = userId;
     }
     
-    /**
-     * @return the userId
-     */
-    public String getuserType() {
-        return userType;
-    }
-
-    /**
-     * @param userId the userId to set
-     */
-    public void setuserType(String userType) {
-        this.userType = userType;
+    public UserType[] getUserTypes() {
+        return UserType.values();
     }
 
     /**
@@ -185,6 +186,8 @@ public class SignInBean {
             acc.setPassword(passhash);
             persist(acc);
             status="New Account was Successfully Created";
+            HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+            session.setAttribute("User", acc);
         } catch (UnsupportedEncodingException | NoSuchAlgorithmException | RuntimeException ex ) {
             Logger.getLogger(SignInBean.class.getName()).log(Level.SEVERE, null, ex);
             status="Error While Creating New Account";

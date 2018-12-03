@@ -19,11 +19,10 @@
                     <h:message id="idMsg" for="id" errorStyle="color:red; display:block"/>
                     
                     <h:outputText value="User Type"></h:outputText>
-                    <h:selectOneListbox id="type" value="#{signInBean.userType}" required="true" requiredMessage="Please enter User Type">
-                        <f:selectItem itemValue = "agent" itemLabel = "Agent" /> 
-                        <f:selectItem itemValue = "customer" itemLabel = "Customer" /> 
-                        <f:selectItem itemValue = "owner" itemLabel = "Owner" />
-                    </h:selectOneListbox>
+                    <h:selectOneMenu value="#{signInBean.userType}">
+                        <f:selectItems value="#{signInBean.userTypes}" var="user"
+                            itemValue="#{user}" itemLabel="#{user.label}" />
+                    </h:selectOneMenu>
                     <h:message id="idType" for="id" errorStyle="color:red; display:block"/>
                     
                     <h:outputText value="First Name"></h:outputText>

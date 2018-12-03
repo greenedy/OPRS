@@ -25,6 +25,7 @@ import persistence.UserAccount;
 public class ViewAccount {
     private String status;
     private String userId;
+    private String userType;
     private String firstname;
     private String lastname;
     private String birthDate;
@@ -52,6 +53,7 @@ public class ViewAccount {
             lastname = user.getLastname();
             birthDate = user.getBirthDate().toString();
             city = user.getCity();
+            userType = user.getUserType().getLabel();
         }
     }
     
@@ -153,6 +155,15 @@ public class ViewAccount {
      */
     public boolean isShowError() {
         return showError;
+    }
+    
+    
+    public String getUserType() {
+        return userType;
+    }
+
+    public void setUserType(String userType) {
+        this.userType = userType;
     }
    
     
