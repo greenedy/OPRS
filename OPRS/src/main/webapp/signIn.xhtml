@@ -13,10 +13,18 @@
                 <f:view>
                     <h:form>
                     <h:panelGrid columns="3">
-                    <h:outputText value="User Id"></h:outputText>
-                    <h:inputText id="id" value="#{signInBean.userId}" required="true" requiredMessage="Please enter User Id">
+                    <h:outputText value="Username"></h:outputText>
+                    <h:inputText id="id" value="#{signInBean.userId}" required="true" requiredMessage="Please enter Username">
                     </h:inputText>
                     <h:message id="idMsg" for="id" errorStyle="color:red; display:block"/>
+                    
+                    <h:outputText value="User Type"></h:outputText>
+                    <h:selectOneMenu value="#{signInBean.userType}">
+                        <f:selectItems value="#{signInBean.userTypes}" var="user"
+                            itemValue="#{user}" itemLabel="#{user.label}" />
+                    </h:selectOneMenu>
+                    <h:message id="idType" for="id" errorStyle="color:red; display:block"/>
+                    
                     <h:outputText value="First Name"></h:outputText>
                     <h:inputText id="fname" value="#{signInBean.firstname}" required="true" requiredMessage="Please enter First Name">
                     </h:inputText>

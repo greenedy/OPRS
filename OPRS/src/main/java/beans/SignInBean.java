@@ -6,6 +6,7 @@
 
 package beans;
 
+import enums.UserType;
 import java.io.UnsupportedEncodingException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -16,9 +17,11 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.servlet.http.HttpSession;
 import persistence.UserAccount;
 
 /**
@@ -29,6 +32,15 @@ import persistence.UserAccount;
 @RequestScoped
 public class SignInBean {
     private String userId;
+    private UserType userType;
+
+    public UserType getUserType() {
+        return userType;
+    }
+
+    public void setUserType(UserType userType) {
+        this.userType = userType;
+    }
     private String firstname;
     private String lastname;
     private String birthDate;
@@ -58,6 +70,10 @@ public class SignInBean {
      */
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+    
+    public UserType[] getUserTypes() {
+        return UserType.values();
     }
 
     /**
@@ -152,6 +168,7 @@ public class SignInBean {
         try {
             UserAccount acc = new UserAccount();
             acc.setUserId(userId);
+            acc.setUserType(userType);
             acc.setFirstname(firstname);
             acc.setLastname(lastname);
             acc.setCity(city);
@@ -168,7 +185,9 @@ public class SignInBean {
             acc.setSalt(salt);
             acc.setPassword(passhash);
             persist(acc);
-            status="New Account Created Fine";
+            status="New Account was Successfully Created";
+            HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+            session.setAttribute("User", acc);
         } catch (UnsupportedEncodingException | NoSuchAlgorithmException | RuntimeException ex ) {
             Logger.getLogger(SignInBean.class.getName()).log(Level.SEVERE, null, ex);
             status="Error While Creating New Account";
