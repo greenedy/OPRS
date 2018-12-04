@@ -10,13 +10,9 @@
     <h:body>
         <ui:composition template="./template.xhtml">
         <ui:define name="content">
+            <h:form>
             <h:panelGroup id="results">
-                <h:dataTable  border="2" bgcolor="green" id="resultTable" value="#{searchProperties.lookupResults}" var="property">
-                <h:column>
-                    <h:commandButton value="Add To Visiting List" action="#{VisitingListBean.addToVisitingList}">
-                        <f:setPropertyActionListener target="#{VisitingListBean.propertyId}" value="#{property.propertyId}" />
-                    </h:commandButton>
-                </h:column>
+                <h:dataTable rendered="#{VisitingListBean.showResults}"  border="2" bgcolor="green" id="resultTable" value="#{searchProperties.lookupResults}" var="property">
                 <h:column>
                     <f:facet name="header">Property ID</f:facet>
                     #{property.propertyId}
@@ -59,6 +55,15 @@
                 </h:column>   
                 </h:dataTable>
             </h:panelGroup>
+            </h:form>
+            <h:form>
+                <h:panelGrid columns="2" >
+                    <h:outputText value="The propertyId field of the property you would like to add: " escape="false"/>
+                    <h:inputText value="#{VisitingListBean.propertyId}" />
+                </h:panelGrid>
+                    <hr></hr>
+                    <h:commandButton value="Add" action="#{VisitingListBean.addToVisitingList}"></h:commandButton>
+             </h:form>
      
         </ui:define>
         </ui:composition>

@@ -5,10 +5,12 @@
  */
 package beans;
 
+import java.io.Serializable;
 import java.util.Set;
 import javax.annotation.Resource;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
@@ -25,7 +27,7 @@ import persistence.VisitingListDBHelper;
  */
 @Named(value = "VisitingListBean")
 @RequestScoped
-public class VisitingListBean {
+public class VisitingListBean implements Serializable {
     private String propertyId;
     @PersistenceContext(unitName = "OPRS-PU")
     EntityManager em;
@@ -57,6 +59,16 @@ public class VisitingListBean {
     public String addToVisitingList(){
         VisitingListDBHelper.addToVisitingList(utx, em, propertyId);
         return("index");
+    }
+    
+    public String doNothing(){
+        System.out.println("");
+        return("index");
+    }
+    
+    // show results if any
+    public boolean getShowResults() {
+        return true;
     }
     
     /**
