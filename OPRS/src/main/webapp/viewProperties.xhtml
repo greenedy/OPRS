@@ -1,0 +1,66 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <h:head>
+        <title>Facelet Title</title>
+    </h:head>
+    <h:body>
+        <ui:composition template="./template.xhtml">
+        <ui:define name="content">
+            <h:panelGroup id="results">
+                <h:dataTable  border="2" bgcolor="green" id="resultTable" value="#{searchProperties.lookupResults}" var="property">
+                <h:column>
+                    <h:commandButton value="Add To Visiting List" action="#{VisitingListBean.addToVisitingList}">
+                        <f:setPropertyActionListener target="#{VisitingListBean.propertyId}" value="#{property.propertyId}" />
+                    </h:commandButton>
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Property ID</f:facet>
+                    #{property.propertyId}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">City/Location</f:facet>
+                    #{property.address.city}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Number</f:facet>
+                    #{property.address.number}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Street Name</f:facet>
+                    #{property.address.name}
+                </h:column>    
+                <h:column>
+                    <f:facet name="header">Unit</f:facet>
+                    #{property.address.unit}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Property Type</f:facet>
+                    #{property.type}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Number of Bedrooms</f:facet>
+                    #{property.numBedrooms}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Number of Bathrooms</f:facet>
+                    #{property.numBathrooms}
+                </h:column>
+                <h:column>
+                    <f:facet name="header">Price Of Rent</f:facet>
+                    #{property.priceOfRent}
+                </h:column> 
+                <h:column>
+                    <f:facet name="header">Available Date</f:facet>
+                    #{property.availableDate}
+                </h:column>   
+                </h:dataTable>
+            </h:panelGroup>
+     
+        </ui:define>
+        </ui:composition>
+    </h:body>
+</html>

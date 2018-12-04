@@ -33,7 +33,7 @@ public class VisitingListBean {
     private javax.transaction.UserTransaction utx;
     private Boolean propertyFound = false;
     
-    public String addToVisitingList(){
+    public String addToVisitingListTest(){
         try {
            VisitingListDBHelper.addToVisitingList(utx, em, propertyId);
            
@@ -52,6 +52,11 @@ public class VisitingListBean {
         }
         
         return("addToVisitingList");
+    }
+    
+    public String addToVisitingList(){
+        VisitingListDBHelper.addToVisitingList(utx, em, propertyId);
+        return("index");
     }
     
     /**

@@ -48,7 +48,7 @@ public class SearchProperties implements Serializable {
     public String search() {
        List<Property> results = PropertyDBHelper.findPropertiesWithCriteria(em, this);
        setLookupResults(results);
-       return("index");
+       return("viewProperties");
     }
     
     public void setLookupResults(List<Property> results) {
