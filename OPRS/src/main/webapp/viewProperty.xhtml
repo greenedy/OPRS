@@ -5,6 +5,11 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:f="http://xmlns.jcp.org/jsf/core"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+    <f:metadata>
+        <f:viewParam id="propertyId" name="propertyId" value="#{viewPropertyBean.propertyId}" required="true">
+        </f:viewParam>
+        <f:viewAction action="#{viewPropertyBean.onload}" />
+    </f:metadata>
     <h:head>
         <title>View Property</title>
     </h:head>
@@ -12,43 +17,87 @@
         <p:tooltip showEvent="focus" hideEvent="blur"  />
         <p:growl autoUpdate="true"/>
         <h:form id="form1">
-                    <p:panel id="information" header="Here is the property information">
+                    <p:panel id="information" header="#{viewPropertyBean.getAddressString()}" style="margin-bottom:20px">
+                        
+                        <p:panel style="margin-bottom:20px">
+                         <h:panelGrid  columns="2">
+                            
+                             <h:panelGrid  columns="1">
+                             <p:galleria  panelWidth="500" value="#{viewPropertyBean.imageIds}" var="imageId">
+                                <p:graphicImage value="#{viewPropertyBean.streamedImage}" width="500" >
+                                    <f:param name="id" value="#{imageId}" />
+                                </p:graphicImage>
+                            </p:galleria>
+                            </h:panelGrid>
+                             
+                             <h:panelGrid  columns="1">
+                                <h:outputText style="font-weight:bold" value="Description: " />
+                                <h:inputTextarea cols="70" rows="10" readonly="true" value="#{viewPropertyBean.description}" />
+                            </h:panelGrid>
+                            
+                         </h:panelGrid>
+                        </p:panel>
+                        <p:panel id="info" header="Information" style="margin-bottom:20px">
                         <h:panelGrid  columns="1">
-                            <h:outputText style="font-weight:bold" value="Type: " />
-                            <h:outputText value="#{PropertyBean.type}"/>
+                            <h:panelGrid  columns="2">
+                                <h:outputText style="font-weight:bold" value="Type: " />
+                                <h:outputText value="#{viewPropertyBean.type}"/>
+                            </h:panelGrid>
+                            <h:panelGrid  columns="2">
+                            <h:outputText style="font-weight:bold" value="Price of Rent: " />
+                            <h:outputText value="$#{viewPropertyBean.priceOfRent}"/>
+                            </h:panelGrid>
+                            <h:panelGrid  columns="2">
                             <h:outputText style="font-weight:bold" value="Total number of rooms: " />
-                            <h:outputText value="#{PropertyBean.numTotalRooms}"/>
+                            <h:outputText value="#{viewPropertyBean.numTotalRooms}"/>
+                            </h:panelGrid>
+                            <h:panelGrid  columns="2">
                             <h:outputText style="font-weight:bold" value="Number of Bathrooms: " />
-                            <h:outputText value="#{PropertyBean.numBathrooms}"/>
+                            <h:outputText value="#{viewPropertyBean.numBathrooms}"/>
+                            </h:panelGrid>
+                            <h:panelGrid  columns="2">
                             <h:outputText style="font-weight:bold" value="Number of Bedrooms: " />
-                            <h:outputText value="#{PropertyBean.numBedrooms}"/>
+                            <h:outputText value="#{viewPropertyBean.numBedrooms}"/>
+                            </h:panelGrid>
+                            <h:panelGrid  columns="2">
                             <h:outputText style="font-weight:bold" value="Date available: " />
-                            <h:outputText value="#{PropertyBean.availableDate}"/>
-                            <h:panelGroup />
-                            <h:panelGroup />
+                            <h:outputText value="#{viewPropertyBean.availableDate}"/>
+                            </h:panelGrid>
+                            
+                        </h:panelGrid>
+                        </p:panel>
+                         <p:panel id="addressInfo" header="Address" style="margin-bottom:20px">
+                        <h:panelGrid  columns="1">  
+                            <h:panelGrid  columns="2">
                             <h:outputText style="font-weight:bold" value="Number:"/>
-                            <h:outputText value="#{PropertyBean.number}" />
+                            <h:outputText value="#{viewPropertyBean.number}" />
+                            </h:panelGrid>
+                            <h:panelGrid  columns="2">
                             <h:outputText style="font-weight:bold" value="Street:"/>
-                            <h:outputText value="#{PropertyBean.street}" />
+                            <h:outputText value="#{viewPropertyBean.street}" />
+                            </h:panelGrid>
+                            <h:panelGrid  columns="2">
                             <h:outputText style="font-weight:bold" value="Unit:"/>
-                            <h:outputText value="#{PropertyBean.unit}" />
+                            <h:outputText value="#{viewPropertyBean.unit}" />
+                            </h:panelGrid>
+                            <h:panelGrid  columns="2">
                             <h:outputText style="font-weight:bold" value="City:"/>
-                            <h:outputText value="#{PropertyBean.city}" />
+                            <h:outputText value="#{viewPropertyBean.city}" />
+                            </h:panelGrid>
+                            <h:panelGrid  columns="2">
                             <h:outputText style="font-weight:bold" value="Province:"/>
-                            <h:outputText value="#{PropertyBean.province}" />
+                            <h:outputText value="#{viewPropertyBean.province}" />
+                            </h:panelGrid>
+                            <h:panelGrid  columns="2">
                             <h:outputText style="font-weight:bold" value="Postal Code:"/>
-                            <h:outputText value="#{PropertyBean.postalCode}" />
+                            <h:outputText value="#{viewPropertyBean.postalCode}" />
+                            </h:panelGrid>
                         </h:panelGrid>
-                        <h:panelGrid  columns="2">
-                            <h:outputText style="font-weight:bold" value="Description: " />
-                            <h:inputTextarea cols="70" rows="10" readonly="true" value="#{PropertyBean.description}" />
-                        </h:panelGrid>
-                        <p:galleria  panelWidth="500" value="#{PropertyBean.imageIds}" var="imageId">
-                            <p:graphicImage value="#{PropertyBean.streamedImage}" width="500" >
-                                <f:param name="id" value="#{imageId}" />
-                            </p:graphicImage>
-                        </p:galleria>
+                        </p:panel>
+                        
                     </p:panel>
+            <p:commandButton id="updateBtn"  ajax="false" action="#{viewPropertyBean.goToUpdateProperty}" value="Update Property"/>
+            <p:commandButton id="deleteBtn"  ajax="false" action="#{viewPropertyBean.doDeleteProperty}" value="Delete Property"/>
         </h:form>
 
     </h:body>

@@ -29,4 +29,29 @@
             <to-view-id>/login.xhtml</to-view-id>
         </navigation-case>
     </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/addProperty.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>viewProperty</from-outcome>
+            <to-view-id>/viewProperty.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/viewProperty.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>updateProperty</from-outcome>
+            <to-view-id>/updateProperty.xhtml</to-view-id>
+        </navigation-case>
+        <navigation-case>
+            <from-outcome>index</from-outcome>
+            <to-view-id>/index.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+    <navigation-rule>
+        <from-view-id>/updateProperty.xhtml</from-view-id>
+        <navigation-case>
+            <from-outcome>viewProperty</from-outcome>
+            <to-view-id>/viewProperty.xhtml</to-view-id>
+        </navigation-case>
+    </navigation-rule>
 </faces-config>

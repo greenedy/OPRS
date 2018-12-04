@@ -78,7 +78,7 @@ public class Property implements Serializable {
     
     public Property(String owner, String type, int numTotalRooms, 
             int numBathrooms, int numBedrooms, Date availableDate, Address address,
-            String description) {
+            String description, double priceOfRent) {
         this.owner = owner;
         this.type = type;
         this.numTotalRooms = numTotalRooms;
@@ -87,6 +87,7 @@ public class Property implements Serializable {
         this.availableDate = availableDate;
         this.address = address;
         this.description = description;
+        this.priceOfRent = priceOfRent;
         this.pictures = new ArrayList<>();
     }
     

@@ -28,6 +28,9 @@ public class OnlinePropertyRentalSystemBean {
     public String addProperty(){
         return "addProperty";
     }
+     public String viewProperty(){
+        return "viewProperty?faces-redirect=true";
+    }
     public String login(){
         return "login";
     }

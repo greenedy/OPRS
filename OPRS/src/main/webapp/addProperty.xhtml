@@ -17,13 +17,21 @@
                     <p:panel header="Property Details">
                         <h:panelGrid columns="1">
                             <p:outputLabel value="Type:*"/>
-                            <p:inputText id="type"
-                                         value="#{PropertyBean.type}"
+<!--                            <p:inputText id="type"
+                                         value="{PropertyBean.type}"
                                          required="true" label="type"
                                          requiredMessage="A Type is required">
                                 <p:ajax event="keyup" update="typeMsg"/>
                             </p:inputText>
+                            <p:message  id="typeMsg" for="type"/>-->
+                            
+                            <p:selectOneMenu id="type" value="#{PropertyBean.type}" required="true" label="type" requiredMessage="A Type is required">
+                                <f:selectItem itemLabel="Select Type" itemValue="" noSelectionOption="false" />
+                                <f:selectItems value="#{PropertyBean.types}" />
+                                <p:ajax event="keyup" update="typeMsg"/>
+                            </p:selectOneMenu>
                             <p:message  id="typeMsg" for="type"/>
+                                                   
                             <p:outputLabel value="Total number of rooms:"/>
                             <p:inputText id="numTotalRooms"
                                           value="#{PropertyBean.numTotalRooms}">
@@ -73,18 +81,34 @@
                                          value="#{PropertyBean.unit}"
                                          label="Unit" />
                             <p:message for="unit"/>
-                            <p:outputLabel value="City:*"/>
+                            
+                            <p:outputLabel value="Province:*"/>
+                            <p:selectOneMenu id="province" value="#{PropertyBean.province}" label="Province" required="true" requiredMessage="A Province is required" >
+                                <p:ajax listener="#{PropertyBean.onProvinceChange}" update="city" />
+                                <f:selectItem itemLabel="Select Province" itemValue="" noSelectionOption="false" />
+                                <f:selectItems value="#{PropertyBean.provinces}" />
+                            </p:selectOneMenu>
+                            <p:message for="province"/>
+                            
+                             <p:outputLabel value="City:*"/>
+                             <p:selectOneMenu id="city" value="#{PropertyBean.city}" label="City" required="true" requiredMessage="A City is required">
+                                <f:selectItem itemLabel="Select City" itemValue="" noSelectionOption="false" />
+                                <f:selectItems value="#{PropertyBean.cities}" />
+                            </p:selectOneMenu>
+                            <p:message for="city"/>
+                            
+<!--                            <p:outputLabel value="City:*"/>
                             <p:inputText id="city"
-                                         value="#{PropertyBean.city}"
+                                         value="{PropertyBean.city}"
                                          label="City" 
                                          required="true"
                                          requiredMessage="A City Name is required"/>
                             <p:message for="city"/>
                             <p:outputLabel value="Province:"/>
                             <p:inputText id="province"
-                                         value="#{PropertyBean.province}"
+                                         value="{PropertyBean.province}"
                                          label="Province" />
-                            <p:message for="province"/>
+                            <p:message for="province"/>-->
                             <p:outputLabel value="Postal Code:"/>
                             <p:inputText id="pcode"
                                          value="#{PropertyBean.postalCode}"
@@ -149,8 +173,7 @@
                                 <f:param name="id" value="#{imageId}" />
                             </p:graphicImage>
                         </p:galleria>
-                        <p:commandButton id="submitBtn" actionListener="#{PropertyBean.doAddProperty}"
-                                         value="Add Property"
+                        <p:commandButton id="submitBtn" actionListener="#{PropertyBean.doAddProperty}" value="Add Property"
                                          onclick="PF('bui').show()" oncomplete="PF('bui').hide()"/>
                     </p:panel>
                 </p:tab>

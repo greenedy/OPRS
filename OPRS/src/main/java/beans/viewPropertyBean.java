@@ -1,9 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package beans;
+
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -17,7 +13,6 @@ import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
-import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.ViewScoped;
@@ -34,16 +29,16 @@ import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 import persistence.Address;
 import persistence.Property;
-
+import persistence.PropertyDBHelper;
 
 /**
  *
  * @author green
  */
-@Named(value = "PropertyBean")
-@ManagedBean(name="PropertyBean")
+@Named(value = "viewPropertyBean")
+@ManagedBean(name="viewPropertyBean")
 @ViewScoped
-public class PropertyBean implements Serializable {
+public class viewPropertyBean implements Serializable {
     /**
      * Internal class to represent images prior to persisting
      */
@@ -64,21 +59,33 @@ public class PropertyBean implements Serializable {
             return type;
         }
     }
-    
+    private Long propertyId;
+    private Property property;
     private String owner;
     private String type;
+    private double priceOfRent;
+
+    public String getOwner() {
+        return owner;
+    }
+
+    public void setOwner(String owner) {
+        this.owner = owner;
+    }
+
+    public double getPriceOfRent() {
+        return priceOfRent;
+    }
+
+    public void setPriceOfRent(double priceOfRent) {
+        this.priceOfRent = priceOfRent;
+    }
     private int numTotalRooms;
     private int numBathrooms;
     private int numBedrooms;
     private Date availableDate;
     private String description;
-    private double priceOfRent;
-
-   
-
-    
-
- 
+    private Address address;
     private String number;
     private String street;
     private String unit;
@@ -91,34 +98,51 @@ public class PropertyBean implements Serializable {
     private javax.transaction.UserTransaction utx;
     private Map<String,Image> images;
     
-    private List<Property> lookupResults;
-    private Map<String,Map<String,String>> data = new HashMap<String, Map<String,String>>();
-    private Map<String,String> types;
-    private Map<String,String> provinces;
-    private Map<String,String> cities;
-
+   
     /**
      * Creates a new instance of UserProfileBean
      */
-    public PropertyBean() {
+    public viewPropertyBean() {
         images = new TreeMap<>();
         
-        types = new HashMap<String, String>();
-        types.put("House", "House");
-        types.put("Apartment", "Apartment");
-        types.put("Condo", "Condo");
-        
-        provinces  = new HashMap<String, String>();
-        provinces.put("Ontario", "Ontario");
-         
-        Map<String,String> map = new HashMap<String, String>();
-       
-        map.put("Ottawa", "Ottawa");
-        map.put("Toronto", "Toronto");
-        data.put("Ontario", map);
-                
+                        
+    }
+    
+    public void onload() {
+    
+       property = PropertyDBHelper.findProperty(em, Long.toString(propertyId));  
+       this.owner = property.getOwner();
+       this.type = property.getType();
+       this.numTotalRooms = property.getNumTotalRooms();
+       this.numBathrooms = property.getNumBathrooms();
+       this.numBedrooms = property.getNumBedrooms();
+       this.priceOfRent = property.getPriceOfRent();
+       this.availableDate = property.getAvailableDate();
+       this.description = property.getDescription();
+       this.address = property.getAddress();
+       this.number = address.getNumber();
+       this.street = address.getName();
+       this.unit = address.getUnit();
+       this.city = address.getCity();
+       this.province = address.getProvince();
+       this.postalCode = address.getPostalCode();
+               
     }
 
+    
+     /**
+     * @return the propertyId
+     */
+    public Long getPropertyId() {
+        return propertyId;
+    }
+
+    /**
+     * @param propertyId the id to set
+     */
+    public void setPropertyId(Long propertyId) {
+        this.propertyId = propertyId;
+    }
     /**
      * @return the firstName
      */
@@ -195,21 +219,7 @@ public class PropertyBean implements Serializable {
     public String getDescription() {
         return description;
     }
-   public String getOwner() {
-        return owner;
-    }
-    
-     public void setOwner(String owner) {
-        this.owner = owner;
-    }
 
-    public double getPriceOfRent() {
-        return priceOfRent;
-    }
-    
-    public void setPriceOfRent(double priceOfRent) {
-        this.priceOfRent = priceOfRent;
-    }
     /**
      * @param description the bio to set
      */
@@ -217,6 +227,27 @@ public class PropertyBean implements Serializable {
         this.description = description;
     }
 
+    /**
+     * @return the address
+     */
+    public Address getAddress() {
+        return address;
+    }
+
+    /**
+     * @return the address
+     */
+    public String getAddressString() {
+        return address.getNumber()+" "+address.getName() +" "+ address.getUnit();
+    }
+    
+    /**
+     * @param address the address to set
+     */
+    public void setAddress(Address address) {
+        this.address = address;
+    }
+    
     /**
      * @return the number
      */
@@ -301,6 +332,10 @@ public class PropertyBean implements Serializable {
         this.postalCode = postalCode;
     }
 
+    public String goToUpdateProperty() {
+        return "updateProperty?faces-redirect=true&propertyId="+property.getPropertyId()+"";
+    }
+    
     public void handlePropertyPicUpload(FileUploadEvent event) {
         UploadedFile uploadedFile = event.getFile();
         try {
@@ -311,7 +346,7 @@ public class PropertyBean implements Serializable {
             String filename = uploadedFile.getFileName();
             images.put(filename, image);
         } catch (IOException ex) {
-            Logger.getLogger(PropertyBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(viewPropertyBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -335,110 +370,37 @@ public class PropertyBean implements Serializable {
     public Collection<String> getImageIds() {
         return images.keySet();
     }
-
-    /**
-     * Add the user to the database
-     * @param actionEvent
-     * @return 
-     */
-    public String doAddProperty() {
-        Address address = new Address(number, street, unit, city, province, postalCode);
-        Property property = new Property(owner, type, numTotalRooms, numBathrooms, numBedrooms, availableDate, address, description, priceOfRent);
-        for (Image p: images.values()) {
-            persistence.Image pim = new persistence.Image(p.getContents(),p.getType());
-            pim.setProperty(property);
-            property.addPicture(pim);
-        }
-        try {
-           persist(property); 
-           String msg = "Property Created Successfully";
-           FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg));
-           FacesContext.getCurrentInstance().getExternalContext()
-                .getFlash().setKeepMessages(true);
-           FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-           FacesContext.getCurrentInstance().getViewRoot().getViewMap().clear();
-           return "viewProperty?faces-redirect=true&propertyId="+property.getPropertyId()+"";
-        } catch(RuntimeException e) {
-           String msg = "Error While Creating Property";
-           FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg));
-           FacesContext.getCurrentInstance().getExternalContext()
-                .getFlash().setKeepMessages(true);
-        }
-        return "viewProperty?faces-redirect=true&propertyId="+property.getPropertyId()+"";
-    }
     
-       public String doUpdateProperty(ActionEvent actionEvent) {
-        Address address = new Address(number, street, unit, city, province, postalCode);
-        Property property = new Property(owner, type, numTotalRooms, numBathrooms, numBedrooms, availableDate, address, description, priceOfRent);
-        for (Image p: images.values()) {
-            persistence.Image pim = new persistence.Image(p.getContents(),p.getType());
-            pim.setProperty(property);
-            property.addPicture(pim);
-        }
+       
+     public String doDeleteProperty() {
+       
+       
         try {
-           persist(property); 
-           String msg = "Property Updated Successfully";
-           FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg));
-           FacesContext.getCurrentInstance().getExternalContext()
-                .getFlash().setKeepMessages(true);
-           FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-           FacesContext.getCurrentInstance().getViewRoot().getViewMap().clear();
-        } catch(RuntimeException e) {
-           String msg = "Error While Updating Property";
-           FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg));
-           FacesContext.getCurrentInstance().getExternalContext()
-                .getFlash().setKeepMessages(true);
-        }
-        return null;
-    }
-
-    public void persist(Object object) {
-        try {
+            
             utx.begin();
-            em.persist(object);
+            if (!em.contains(property)) {
+                property = em.merge(property);
+            }
+            em.remove(property);
             utx.commit();
+          
+           String msg = "Property Removed Successfully";
+           FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg));
+           FacesContext.getCurrentInstance().getExternalContext()
+                .getFlash().setKeepMessages(true);
+           FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+           FacesContext.getCurrentInstance().getViewRoot().getViewMap().clear();
+           return "index?faces-redirect=true";
+        } catch(RuntimeException e) {
+           String msg = "Error While Removing Property";
+           FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg));
+           FacesContext.getCurrentInstance().getExternalContext()
+                .getFlash().setKeepMessages(true);
         } catch (Exception e) {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", e);
-            throw new RuntimeException(e);
-        }
-    }
+            Logger.getLogger(updatePropertyBean.class.getName()).log(Level.SEVERE, null, e);
+        } 
+        return null;
     
-    
-    public void setLookupResults(List<Property> results) {
-        this.lookupResults = results;
     }
-    
-    public List<Property> getLookupResults() {
-        return lookupResults;
-    }
-    // show results if any
-    public boolean getShowResults() {
-        return (lookupResults != null) && !lookupResults.isEmpty();
-    }
-    
-    public Map<String, Map<String, String>> getData() {
-        return data;
-    }
-    
-    public Map<String, String> getTypes() {
-        return types;
-    }
-    
-     public Map<String, String> getProvinces() {
-        return provinces;
-    }
- 
-    public Map<String, String> getCities() {
-        return cities;
-    }
-
-    public void onProvinceChange() {
-        if(province !=null && !province.equals(""))
-            cities = data.get(province);
-        else
-            cities = new HashMap<String, String>();
-    }
-     
-    
 
 }

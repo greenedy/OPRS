@@ -27,6 +27,8 @@ import javax.faces.event.PhaseId;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.transaction.NotSupportedException;
+import javax.transaction.SystemException;
 import org.apache.commons.io.IOUtils;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
@@ -34,16 +36,17 @@ import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 import persistence.Address;
 import persistence.Property;
+import persistence.PropertyDBHelper;
 
 
 /**
  *
  * @author green
  */
-@Named(value = "PropertyBean")
-@ManagedBean(name="PropertyBean")
+@Named(value = "updatePropertyBean")
+@ManagedBean(name="updatePropertyBean")
 @ViewScoped
-public class PropertyBean implements Serializable {
+public class updatePropertyBean implements Serializable {
     /**
      * Internal class to represent images prior to persisting
      */
@@ -64,7 +67,8 @@ public class PropertyBean implements Serializable {
             return type;
         }
     }
-    
+    private Long propertyId;
+    private Property property;
     private String owner;
     private String type;
     private int numTotalRooms;
@@ -73,18 +77,13 @@ public class PropertyBean implements Serializable {
     private Date availableDate;
     private String description;
     private double priceOfRent;
-
-   
-
-    
-
- 
     private String number;
     private String street;
     private String unit;
     private String city;
     private String province;
     private String postalCode;
+    private Address address;
     @PersistenceContext(unitName = "OPRS-PU")
     private EntityManager em;
     @Resource
@@ -97,10 +96,35 @@ public class PropertyBean implements Serializable {
     private Map<String,String> provinces;
     private Map<String,String> cities;
 
+    
+    
+    
+        public void onload() {
+    
+       property = PropertyDBHelper.findProperty(em, Long.toString(propertyId));  
+       this.owner = property.getOwner();
+       this.type = property.getType();
+       this.numTotalRooms = property.getNumTotalRooms();
+       this.numBathrooms = property.getNumBathrooms();
+       this.numBedrooms = property.getNumBedrooms();
+       this.priceOfRent = property.getPriceOfRent();
+       this.availableDate = property.getAvailableDate();
+       this.description = property.getDescription();
+       this.address = property.getAddress();
+       this.number = address.getNumber();
+       this.street = address.getName();
+       this.unit = address.getUnit();
+       this.city = address.getCity();
+       this.province = address.getProvince();
+       this.postalCode = address.getPostalCode();
+               
+    }
+
+    
     /**
      * Creates a new instance of UserProfileBean
      */
-    public PropertyBean() {
+    public updatePropertyBean() {
         images = new TreeMap<>();
         
         types = new HashMap<String, String>();
@@ -119,6 +143,14 @@ public class PropertyBean implements Serializable {
                 
     }
 
+    
+    public Long getPropertyId() {
+        return propertyId;
+    }
+
+    public void setPropertyId(Long propertyId) {
+        this.propertyId = propertyId;
+    }
     /**
      * @return the firstName
      */
@@ -336,22 +368,30 @@ public class PropertyBean implements Serializable {
         return images.keySet();
     }
 
-    /**
-     * Add the user to the database
-     * @param actionEvent
-     * @return 
-     */
-    public String doAddProperty() {
-        Address address = new Address(number, street, unit, city, province, postalCode);
-        Property property = new Property(owner, type, numTotalRooms, numBathrooms, numBedrooms, availableDate, address, description, priceOfRent);
+     
+    
+       public String doUpdateProperty() {
+        address = new Address(number, street, unit, city, province, postalCode);
+        property.setAddress(address);
+        property.setType(type);
+        property.setPriceOfRent(priceOfRent);
+        property.setNumTotalRooms(numTotalRooms);
+        property.setNumBathrooms(numBathrooms);
+        property.setNumBedrooms(numBedrooms);
+        property.setAvailableDate(availableDate);
+        property.setDescription(description);
         for (Image p: images.values()) {
             persistence.Image pim = new persistence.Image(p.getContents(),p.getType());
             pim.setProperty(property);
             property.addPicture(pim);
         }
         try {
-           persist(property); 
-           String msg = "Property Created Successfully";
+            
+            utx.begin();
+            em.merge(property);
+            utx.commit();
+          
+           String msg = "Property Updated Successfully";
            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg));
            FacesContext.getCurrentInstance().getExternalContext()
                 .getFlash().setKeepMessages(true);
@@ -359,37 +399,14 @@ public class PropertyBean implements Serializable {
            FacesContext.getCurrentInstance().getViewRoot().getViewMap().clear();
            return "viewProperty?faces-redirect=true&propertyId="+property.getPropertyId()+"";
         } catch(RuntimeException e) {
-           String msg = "Error While Creating Property";
-           FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg));
-           FacesContext.getCurrentInstance().getExternalContext()
-                .getFlash().setKeepMessages(true);
-        }
-        return "viewProperty?faces-redirect=true&propertyId="+property.getPropertyId()+"";
-    }
-    
-       public String doUpdateProperty(ActionEvent actionEvent) {
-        Address address = new Address(number, street, unit, city, province, postalCode);
-        Property property = new Property(owner, type, numTotalRooms, numBathrooms, numBedrooms, availableDate, address, description, priceOfRent);
-        for (Image p: images.values()) {
-            persistence.Image pim = new persistence.Image(p.getContents(),p.getType());
-            pim.setProperty(property);
-            property.addPicture(pim);
-        }
-        try {
-           persist(property); 
-           String msg = "Property Updated Successfully";
-           FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg));
-           FacesContext.getCurrentInstance().getExternalContext()
-                .getFlash().setKeepMessages(true);
-           FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-           FacesContext.getCurrentInstance().getViewRoot().getViewMap().clear();
-        } catch(RuntimeException e) {
            String msg = "Error While Updating Property";
            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg));
            FacesContext.getCurrentInstance().getExternalContext()
                 .getFlash().setKeepMessages(true);
-        }
-        return null;
+        } catch (Exception e) {
+            Logger.getLogger(updatePropertyBean.class.getName()).log(Level.SEVERE, null, e);
+        } 
+        return "viewProperty?faces-redirect=true&propertyId="+property.getPropertyId()+"";
     }
 
     public void persist(Object object) {
