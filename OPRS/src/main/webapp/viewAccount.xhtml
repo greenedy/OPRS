@@ -6,7 +6,9 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
 <body>
+<ui:composition template="./template.xhtml">
 
+        <ui:define name="content">
                   
         
                 <h1>View Account.</h1>
@@ -33,7 +35,8 @@
                 <div style="display:#{(viewAccountBean.showError)?'block': 'none'}">
                     <h:outputText  style="color:royalblue; font-size: large; font-weight: bold" id="status" value="#{viewAccountBean.status}"/>
                 </div>
-
+        </ui:define>
+</ui:composition>
 
     </body>
 </html>

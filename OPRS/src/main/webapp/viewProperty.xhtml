@@ -14,6 +14,9 @@
         <title>View Property</title>
     </h:head>
     <h:body>
+        <ui:composition template="./template.xhtml">
+
+        <ui:define name="content">
         <p:tooltip showEvent="focus" hideEvent="blur"  />
         <p:growl autoUpdate="true"/>
         <h:form id="form1">
@@ -99,6 +102,7 @@
             <p:commandButton id="updateBtn"  ajax="false" action="#{viewPropertyBean.goToUpdateProperty}" value="Update Property"/>
             <p:commandButton id="deleteBtn"  ajax="false" action="#{viewPropertyBean.doDeleteProperty}" value="Delete Property"/>
         </h:form>
-
+        </ui:define>
+        </ui:composition>
     </h:body>
 </html>

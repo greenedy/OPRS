@@ -238,7 +238,7 @@ public class viewPropertyBean implements Serializable {
      * @return the address
      */
     public String getAddressString() {
-        return address.getNumber()+" "+address.getName() +" "+ address.getUnit();
+        return address.getNumber()+" "+address.getName();
     }
     
     /**

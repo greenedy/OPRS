@@ -72,13 +72,7 @@ public class UserAccount implements Serializable {
         property.getUsers().remove(this);
     } 
 
-    public String getUserId() {
-        return userId;
-    }
-    
-    public UserType getUserType() {
-        return userType;
-    }
+   
 
 
     @Override
@@ -106,11 +100,19 @@ public class UserAccount implements Serializable {
         return "persistence.UserAccount[ id=" + userId + " ]";
     }
 
+     public String getUserId() {
+        return userId;
+    }
+        
     /**
      * @param userId the userId to set
      */
     public void setUserId(String userId) {
         this.userId = userId;
+    }
+    
+        public UserType getUserType() {
+        return userType;
     }
     
      public void setUserType(UserType userType) {

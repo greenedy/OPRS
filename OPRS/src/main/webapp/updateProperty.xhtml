@@ -15,6 +15,9 @@
         <title>Update Property</title>
     </h:head>
     <h:body>
+        <ui:composition template="./template.xhtml">
+
+        <ui:define name="content">
         <p:tooltip showEvent="focus" hideEvent="blur"  />
         <p:growl autoUpdate="true"/>
         <h:form id="form1">
@@ -156,6 +159,7 @@
             </h:form>
 
         </p:dialog>
-
+        </ui:define>
+        </ui:composition>
     </h:body>
 </html>

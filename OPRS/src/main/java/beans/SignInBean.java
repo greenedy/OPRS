@@ -17,6 +17,7 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.annotation.Resource;
 import javax.enterprise.context.RequestScoped;
+import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
@@ -33,14 +34,6 @@ import persistence.UserAccount;
 public class SignInBean {
     private String userId;
     private UserType userType;
-
-    public UserType getUserType() {
-        return userType;
-    }
-
-    public void setUserType(UserType userType) {
-        this.userType = userType;
-    }
     private String firstname;
     private String lastname;
     private String birthDate;
@@ -58,6 +51,15 @@ public class SignInBean {
     public SignInBean() {
     }
 
+    
+    public UserType getUserType() {
+        return userType;
+    }
+
+    public void setUserType(UserType userType) {
+        this.userType = userType;
+    }
+    
     /**
      * @return the userId
      */
@@ -164,7 +166,7 @@ public class SignInBean {
         }
     }
     
-    public void addUser() {
+    public String addUser() {
         try {
             UserAccount acc = new UserAccount();
             acc.setUserId(userId);
@@ -185,13 +187,19 @@ public class SignInBean {
             acc.setSalt(salt);
             acc.setPassword(passhash);
             persist(acc);
-            status="New Account was Successfully Created";
-            HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
-            session.setAttribute("User", acc);
+            
+
+            return "login?faces-redirect=true";
         } catch (UnsupportedEncodingException | NoSuchAlgorithmException | RuntimeException ex ) {
             Logger.getLogger(SignInBean.class.getName()).log(Level.SEVERE, null, ex);
-            status="Error While Creating New Account";
+            String msg = "Error Creating Account";
+           FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg));
+           FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+           FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+           FacesContext.getCurrentInstance().getViewRoot().getViewMap().clear();
         }
+        
+        return null;
     }
     
 }

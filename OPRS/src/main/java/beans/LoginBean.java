@@ -76,7 +76,7 @@ public class LoginBean {
         return status;
     }
 
-    public void login() {
+    public String login() {
          UserAccount acc = em.find(UserAccount.class, userId);
          if (acc != null) {
              try {
@@ -91,6 +91,7 @@ public class LoginBean {
                      HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
                      session.setAttribute("User", acc);
                      status="Login Successful - " + "Welcome " + acc.getFirstname(); 
+                     return "index?faces-redirect=true";
                      
                  } else {
                     status="Invalid Login, Please Try again"; 
@@ -103,6 +104,8 @@ public class LoginBean {
          } else {
              status="Invalid Login, Please Try again";
          }
+         
+         return null;
     }
     
     public String logout() {

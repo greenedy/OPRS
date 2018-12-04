@@ -9,6 +9,10 @@
         <title>Add Property</title>
     </h:head>
     <h:body>
+        <ui:composition template="./template.xhtml">
+
+        <ui:define name="content">
+        
         <p:tooltip showEvent="focus" hideEvent="blur"  />
         <p:growl autoUpdate="true"/>
         <h:form id="form1">
@@ -17,13 +21,7 @@
                     <p:panel header="Property Details">
                         <h:panelGrid columns="1">
                             <p:outputLabel value="Type:*"/>
-<!--                            <p:inputText id="type"
-                                         value="{PropertyBean.type}"
-                                         required="true" label="type"
-                                         requiredMessage="A Type is required">
-                                <p:ajax event="keyup" update="typeMsg"/>
-                            </p:inputText>
-                            <p:message  id="typeMsg" for="type"/>-->
+
                             
                             <p:selectOneMenu id="type" value="#{PropertyBean.type}" required="true" label="type" requiredMessage="A Type is required">
                                 <f:selectItem itemLabel="Select Type" itemValue="" noSelectionOption="false" />
@@ -200,6 +198,7 @@
             </h:form>
 
         </p:dialog>
-
+        </ui:define>
+        </ui:composition>
     </h:body>
 </html>

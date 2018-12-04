@@ -6,7 +6,9 @@
       xmlns:f="http://xmlns.jcp.org/jsf/core">
 
     <body>
+    <ui:composition template="./template.xhtml">
 
+        <ui:define name="content">
                   
         
                 <h1>Create New Account...</h1>
@@ -18,12 +20,14 @@
                     </h:inputText>
                     <h:message id="idMsg" for="id" errorStyle="color:red; display:block"/>
                     
+                                    
                     <h:outputText value="User Type"></h:outputText>
-                    <h:selectOneMenu value="#{signInBean.userType}">
+                    <h:selectOneMenu id="type" value="#{signInBean.userType}">
                         <f:selectItems value="#{signInBean.userTypes}" var="user"
                             itemValue="#{user}" itemLabel="#{user.label}" />
                     </h:selectOneMenu>
-                    <h:message id="idType" for="id" errorStyle="color:red; display:block"/>
+                    <h:message id="typeMsg" for="type" errorStyle="color:red; display:block"/>
+                    
                     
                     <h:outputText value="First Name"></h:outputText>
                     <h:inputText id="fname" value="#{signInBean.firstname}" required="true" requiredMessage="Please enter First Name">
@@ -52,9 +56,9 @@
                     <h:message id="passwdMsg" for="passwd" errorStyle="color:red; display:block" styleClass="errorMessage"/>
                  
                     </h:panelGrid>
-                <h:commandButton value="Add" type="command"  actionListener="#{signInBean.addUser}">
-                   <f:ajax execute="id fname lname birthdate city passwd" 
-                           render="status idMsg fnameMsg lnameMsg birthdateMsg cityMsg passwdMsg"/>
+                <h:commandButton value="Add" action="#{signInBean.addUser}">
+                   <f:ajax execute="id type fname lname birthdate city passwd" 
+                           render="status idMsg typeMsg fnameMsg lnameMsg birthdateMsg cityMsg passwdMsg"/>
                 </h:commandButton>
                 <h:commandButton value="Cancel" type="reset" />
                 
@@ -66,6 +70,7 @@
                     </h:form>
                 </f:view>
 
-
+        </ui:define>
+    </ui:composition>
     </body>
 </html>

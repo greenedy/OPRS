@@ -2,7 +2,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <html xmlns="http://www.w3.org/1999/xhtml"
       xmlns:h="http://xmlns.jcp.org/jsf/html"
-      xmlns:f="http://xmlns.jcp.org/jsf/core">
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
         <title>OPS Title</title>
     </h:head>
@@ -12,9 +14,14 @@
 
     <center>
     <h:body>
+        
+        <ui:composition template="./template.xhtml">
+
+        <ui:define name="content">
         <f:view>
-            <h:graphicImage value="/graphics/banner.png"/>
+            
             <h:form>
+               
                 <h:panelGrid columns="9">
                     <h:button value="Public Page" outcome="/public/welcomePublic"/>
                     <h:button value="Private Page" outcome="/protected/welcomeProtected"/>
@@ -30,7 +37,8 @@
             </h:form>
             <h:graphicImage value="/graphics/home.png"/>
         </f:view>
-
+        </ui:define>
+        </ui:composition>
     </h:body>
     </center>
 </html>
