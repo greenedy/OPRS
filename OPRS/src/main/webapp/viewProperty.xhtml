@@ -99,8 +99,12 @@
                         </p:panel>
                         
                     </p:panel>
-            <p:commandButton id="updateBtn"  ajax="false" action="#{viewPropertyBean.goToUpdateProperty}" value="Update Property"/>
-            <p:commandButton id="deleteBtn"  ajax="false" action="#{viewPropertyBean.doDeleteProperty}" value="Delete Property"/>
+            
+            <p:commandButton id="updateBtn"  ajax="false" rendered="#{viewPropertyBean.showUpdate}" action="#{viewPropertyBean.goToUpdateProperty}" value="Update Property"/>
+            <p:commandButton id="deleteBtn"  ajax="false" rendered="#{viewPropertyBean.showDelete}" action="#{viewPropertyBean.doDeleteProperty}" value="Delete Property"/>
+            <p:commandButton id="addVisitingListBtn"  ajax="false" rendered="#{viewPropertyBean.showAddVisitingList}" action="#{viewPropertyBean.addToVisitingList()}" value="Add to Visiting List"/>
+            <p:commandButton id="RemoveVisitingListBtn"  ajax="false" rendered="#{viewPropertyBean.showRemoveVisitingList}" action="#{viewPropertyBean.removeFromVisitingList()}" value="Remove from Visiting List"/>
+
         </h:form>
         </ui:define>
         </ui:composition>
