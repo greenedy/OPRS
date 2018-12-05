@@ -5,10 +5,12 @@
  */
 package beans;
 
+import java.io.Serializable;
 import java.util.Set;
 import javax.annotation.Resource;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
+import javax.enterprise.context.SessionScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.persistence.EntityManager;
@@ -25,15 +27,17 @@ import persistence.VisitingListDBHelper;
  */
 @Named(value = "VisitingListBean")
 @RequestScoped
-public class VisitingListBean {
+public class VisitingListBean implements Serializable {
     private String propertyId;
     @PersistenceContext(unitName = "OPRS-PU")
     EntityManager em;
     @Resource
     private javax.transaction.UserTransaction utx;
     private Boolean propertyFound = false;
+    private Boolean addedSuccessfully;
+    private Boolean addedUnsuccessfully;
     
-    public String addToVisitingList(){
+    public String addToVisitingListTest(){
         try {
            VisitingListDBHelper.addToVisitingList(utx, em, propertyId);
            
@@ -54,11 +58,58 @@ public class VisitingListBean {
         return("addToVisitingList");
     }
     
+    public String addToVisitingList(){
+        try{
+            VisitingListDBHelper.addToVisitingList(utx, em, propertyId);
+            setAddedSuccessfully((Boolean) true);
+            setAddedUnsuccessfully((Boolean) false);
+        }catch(RuntimeException e){
+            setAddedSuccessfully((Boolean) false);
+            setAddedUnsuccessfully((Boolean) true);
+            e.printStackTrace();
+        }
+        return(null);
+    }
+    
+    
+    // show results if any
+    public boolean getShowResults() {
+        return true;
+    }
+    
     /**
      * @return the propertyId
      */
     public String getPropertyId() {
         return propertyId;
+    }
+
+    /**
+     * @return the addedSuccessfully
+     */
+    public Boolean getAddedSuccessfully() {
+        return addedSuccessfully;
+    }
+
+    /**
+     * @param addedSuccessfully the addedSuccessfully to set
+     */
+    public void setAddedSuccessfully(Boolean addedSuccessfully) {
+        this.addedSuccessfully = addedSuccessfully;
+    }
+
+    /**
+     * @return the addedUnsuccessfully
+     */
+    public Boolean getAddedUnsuccessfully() {
+        return addedUnsuccessfully;
+    }
+
+    /**
+     * @param addedUnsuccessfully the addedUnsuccessfully to set
+     */
+    public void setAddedUnsuccessfully(Boolean addedUnsuccessfully) {
+        this.addedUnsuccessfully = addedUnsuccessfully;
     }
 
     /**

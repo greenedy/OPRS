@@ -36,6 +36,8 @@ public class SearchProperties implements Serializable {
     private int numberOfOtherRooms;
     private double minPriceOfRent;
     private double maxPriceOfRent;
+    private Boolean foundNoResults;
+    private Boolean noCriteria;
     
     
     /**
@@ -46,9 +48,21 @@ public class SearchProperties implements Serializable {
     }
     
     public String search() {
+       if(0 == getNumberOfBathrooms() 
+               && 0 == getNumberOfBedrooms()
+               && getPropertyType() == null
+               && 0 == getMinPriceOfRent()
+               && 0 == getMaxPriceOfRent()
+               && !(getLocationOttawa() || getLocationToronto())){
+            setNoCriteria(true);
+            return(null);
+       }
+       
        List<Property> results = PropertyDBHelper.findPropertiesWithCriteria(em, this);
        setLookupResults(results);
-       return("index");
+       if(results == null || results.isEmpty()){setFoundNoResults((Boolean) true);}
+        setNoCriteria(false);
+       return("viewProperties");
     }
     
     public void setLookupResults(List<Property> results) {
@@ -61,6 +75,20 @@ public class SearchProperties implements Serializable {
     // show results if any
     public boolean getShowResults() {
         return (lookupResults != null) && !lookupResults.isEmpty();
+    }
+
+    /**
+     * @return the foundNoResults
+     */
+    public Boolean getFoundNoResults() {
+        return foundNoResults;
+    }
+
+    /**
+     * @param foundNoResults the foundNoResults to set
+     */
+    public void setFoundNoResults(Boolean foundNoResults) {
+        this.foundNoResults = foundNoResults;
     }
     // show message if no result
     public boolean getShowMessage() {
@@ -177,10 +205,26 @@ public class SearchProperties implements Serializable {
     }
 
     /**
+     * @return the noCriteria
+     */
+    public Boolean getNoCriteria() {
+        return noCriteria;
+    }
+
+    /**
+     * @param noCriteria the noCriteria to set
+     */
+    public void setNoCriteria(Boolean noCriteria) {
+        this.noCriteria = noCriteria;
+    }
+
+    /**
      * @param maxPriceOfRent the maxPriceOfRent to set
      */
     public void setMaxPriceOfRent(double maxPriceOfRent) {
         this.maxPriceOfRent = maxPriceOfRent;
     }
+
+ 
     
 }
