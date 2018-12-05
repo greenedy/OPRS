@@ -1,6 +1,7 @@
 package beans;
 
 
+import enums.UserType;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.Serializable;
@@ -9,6 +10,7 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.TreeMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -22,6 +24,7 @@ import javax.faces.event.PhaseId;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.servlet.http.HttpSession;
 import org.apache.commons.io.IOUtils;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
@@ -30,6 +33,8 @@ import org.primefaces.model.UploadedFile;
 import persistence.Address;
 import persistence.Property;
 import persistence.PropertyDBHelper;
+import persistence.UserAccount;
+import persistence.VisitingListDBHelper;
 
 /**
  *
@@ -97,6 +102,10 @@ public class viewPropertyBean implements Serializable {
     @Resource
     private javax.transaction.UserTransaction utx;
     private Map<String,Image> images;
+    private boolean showUpdate = false;
+    private boolean showDelete = false;
+    private boolean showAddVisitingList = false;
+    private boolean showRemoveVisitingList = false;
     
    
     /**
@@ -126,6 +135,33 @@ public class viewPropertyBean implements Serializable {
        this.city = address.getCity();
        this.province = address.getProvince();
        this.postalCode = address.getPostalCode();
+       
+        HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+        
+        UserAccount user = (UserAccount)session.getAttribute("User");
+        
+        if (user!=null){
+            
+            if(user.getUserType().equals(UserType.CUSTOMER)){
+                
+                if(user.getProperties().contains(property)){
+                    showRemoveVisitingList=true;
+                }
+                else{
+                    showAddVisitingList=true;
+                }
+                
+            }
+            else if(user.getUserType().equals(UserType.OWNER)){
+                
+                showUpdate=true;
+                showDelete=true;
+                
+            }
+            
+            
+            
+        }
                
     }
 
@@ -336,6 +372,38 @@ public class viewPropertyBean implements Serializable {
         return "updateProperty?faces-redirect=true&propertyId="+property.getPropertyId()+"";
     }
     
+    public boolean isShowUpdate() {
+        return showUpdate;
+    }
+
+    public void setShowUpdate(boolean showUpdate) {
+        this.showUpdate = showUpdate;
+    }
+
+    public boolean isShowDelete() {
+        return showDelete;
+    }
+
+    public void setShowDelete(boolean showDelete) {
+        this.showDelete = showDelete;
+    }
+
+    public boolean isShowAddVisitingList() {
+        return showAddVisitingList;
+    }
+
+    public void setShowAddVisitingList(boolean showAddVisitingList) {
+        this.showAddVisitingList = showAddVisitingList;
+    }
+
+    public boolean isShowRemoveVisitingList() {
+        return showRemoveVisitingList;
+    }
+
+    public void setShowRemoveVisitingList(boolean showRemoveVisitingList) {
+        this.showRemoveVisitingList = showRemoveVisitingList;
+    }
+    
     public void handlePropertyPicUpload(FileUploadEvent event) {
         UploadedFile uploadedFile = event.getFile();
         try {
@@ -374,7 +442,6 @@ public class viewPropertyBean implements Serializable {
        
      public String doDeleteProperty() {
        
-       
         try {
             
             utx.begin();
@@ -384,23 +451,55 @@ public class viewPropertyBean implements Serializable {
             em.remove(property);
             utx.commit();
           
-           String msg = "Property Removed Successfully";
-           FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg));
-           FacesContext.getCurrentInstance().getExternalContext()
-                .getFlash().setKeepMessages(true);
-           FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-           FacesContext.getCurrentInstance().getViewRoot().getViewMap().clear();
            return "index?faces-redirect=true";
+           
         } catch(RuntimeException e) {
            String msg = "Error While Removing Property";
            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg));
-           FacesContext.getCurrentInstance().getExternalContext()
-                .getFlash().setKeepMessages(true);
+           FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
         } catch (Exception e) {
             Logger.getLogger(updatePropertyBean.class.getName()).log(Level.SEVERE, null, e);
         } 
         return null;
     
+    }
+     
+     public String addToVisitingList(){
+        try {
+           VisitingListDBHelper.addToVisitingList(utx, em, property.getPropertyId());
+           
+                     
+        } catch(RuntimeException e) {
+           String msg = "Error While adding Property to visiting list";
+           FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg));
+           FacesContext.getCurrentInstance().getExternalContext()
+                .getFlash().setKeepMessages(true);
+        }
+        
+        return "viewProperty?faces-redirect=true&propertyId="+property.getPropertyId()+"";
+    }
+     
+     public String removeFromVisitingList(){
+            try {
+            
+            HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+            UserAccount user = (UserAccount) session.getAttribute("User");
+            user.removeProperty(PropertyDBHelper.findProperty(em, property.getPropertyId()));
+            
+            utx.begin();
+            em.merge(user);
+            utx.commit();
+          
+           return "viewProperty?faces-redirect=true&propertyId="+property.getPropertyId()+"";
+           
+        } catch(RuntimeException e) {
+           String msg = "Error While Removing Property";
+           FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg));
+           FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+        } catch (Exception e) {
+            Logger.getLogger(updatePropertyBean.class.getName()).log(Level.SEVERE, null, e);
+        } 
+        return null;
     }
 
 }

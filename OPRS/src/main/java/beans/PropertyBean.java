@@ -353,10 +353,8 @@ public class PropertyBean implements Serializable {
            persist(property); 
            String msg = "Property Created Successfully";
            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg));
-           FacesContext.getCurrentInstance().getExternalContext()
-                .getFlash().setKeepMessages(true);
-           FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-           FacesContext.getCurrentInstance().getViewRoot().getViewMap().clear();
+           FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+       
            return "viewProperty?faces-redirect=true&propertyId="+property.getPropertyId()+"";
         } catch(RuntimeException e) {
            String msg = "Error While Creating Property";

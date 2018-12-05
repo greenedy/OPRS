@@ -56,7 +56,13 @@
                 <h:column>
                     <f:facet name="header">Available Date</f:facet>
                     #{property.availableDate}
-                </h:column>   
+                </h:column>
+                <h:column>
+                    <f:facet name="header">View Property</f:facet>
+                    <h:button value="View" outcome="viewProperty">
+                        <f:param name ="propertyId" value="#{property.propertyId}"></f:param>
+                    </h:button>
+                </h:column> 
                 </h:dataTable>
             </h:panelGroup>
             </h:form>

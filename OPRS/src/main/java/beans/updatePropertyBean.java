@@ -393,16 +393,13 @@ public class updatePropertyBean implements Serializable {
           
            String msg = "Property Updated Successfully";
            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg));
-           FacesContext.getCurrentInstance().getExternalContext()
-                .getFlash().setKeepMessages(true);
-           FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-           FacesContext.getCurrentInstance().getViewRoot().getViewMap().clear();
+           FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
+          
            return "viewProperty?faces-redirect=true&propertyId="+property.getPropertyId()+"";
         } catch(RuntimeException e) {
            String msg = "Error While Updating Property";
            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg));
-           FacesContext.getCurrentInstance().getExternalContext()
-                .getFlash().setKeepMessages(true);
+           FacesContext.getCurrentInstance().getExternalContext().getFlash().setKeepMessages(true);
         } catch (Exception e) {
             Logger.getLogger(updatePropertyBean.class.getName()).log(Level.SEVERE, null, e);
         } 

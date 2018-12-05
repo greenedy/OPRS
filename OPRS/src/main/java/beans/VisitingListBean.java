@@ -72,6 +72,7 @@ public class VisitingListBean implements Serializable {
     }
     
     
+    
     // show results if any
     public boolean getShowResults() {
         return true;
