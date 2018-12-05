@@ -6,6 +6,7 @@
 
 package filters;
 
+import enums.UserType;
 import java.io.IOException;
 import javax.servlet.Filter;
 import javax.servlet.FilterChain;
@@ -16,6 +17,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import persistence.UserAccount;
 
 /**
  *
@@ -58,10 +60,31 @@ public class AuthenticationFilter implements Filter {
         System.out.println(reqURI);
         // redirects to login page if an attempt to access a page in /protected folder  
         // is made by an anonymous (not logged) user
-        if (reqURI.contains("/protected/") && (ses == null || (ses != null && ses.getAttribute("User") == null))) {
-            String loginURL = req.getContextPath() + "/faces/login.xhtml";
+        if (reqURI.contains("addProperty") && (ses == null || (ses != null && ses.getAttribute("User") == null))) {
+             String loginURL = req.getContextPath() + "/faces/login.xhtml";
             res.sendRedirect(loginURL);
-        } else {
+        } else if(reqURI.contains("addPropery") && (ses == null || (ses != null && ses.getAttribute("User") != null))){
+             UserAccount user =(UserAccount) ses.getAttribute("User");
+             if(user.getUserType().equals(UserType.OWNER)){
+                 chain.doFilter(request, response);
+             }
+             else{
+                String loginURL = req.getContextPath() + "/faces/login.xhtml";
+                res.sendRedirect(loginURL);
+             }
+        } else if (reqURI.contains("updateProperty") && (ses == null || (ses != null && ses.getAttribute("User") == null))) {
+             String loginURL = req.getContextPath() + "/faces/login.xhtml";
+            res.sendRedirect(loginURL);
+        } else if(reqURI.contains("updatePropery") && (ses == null || (ses != null && ses.getAttribute("User") != null))){
+             UserAccount user =(UserAccount) ses.getAttribute("User");
+             if(user.getUserType().equals(UserType.OWNER)){
+                 chain.doFilter(request, response);
+             }
+             else{
+                String loginURL = req.getContextPath() + "/faces/login.xhtml";
+                res.sendRedirect(loginURL);
+             }
+        } else{
             chain.doFilter(request, response);
         }  
             
