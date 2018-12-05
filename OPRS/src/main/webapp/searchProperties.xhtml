@@ -43,6 +43,7 @@
                 <hr></hr>
                   <h:commandButton value="Search" action="#{searchProperties.search}"></h:commandButton>
         </h:form>
+        <h:outputText rendered="#{searchProperties.noCriteria}" style="color:red" id="noResultsMessage" value="At least one criteria must be filled"/>
         </ui:define>
         </ui:composition>
     </h:body>

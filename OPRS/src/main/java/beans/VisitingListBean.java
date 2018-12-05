@@ -66,6 +66,7 @@ public class VisitingListBean implements Serializable {
         }catch(RuntimeException e){
             setAddedSuccessfully((Boolean) false);
             setAddedUnsuccessfully((Boolean) true);
+            e.printStackTrace();
         }
         return(null);
     }
