@@ -18,12 +18,14 @@ import javax.persistence.JoinColumn;
 import javax.persistence.JoinTable;
 import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
+import javax.persistence.Table;
 
 /**
  *
  * @author ssome
  */
 @Entity
+@Table(name="UserAccountTeam7")
 public class UserAccount implements Serializable {
     private static long serialVersionUID = 1L;
 

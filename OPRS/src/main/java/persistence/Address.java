@@ -17,7 +17,7 @@ import javax.persistence.Table;
  * @author ssome
  */
 @Entity
-@Table(name="Address")
+@Table(name="AddressTeam7")
 public class Address implements Serializable {
     private static long serialVersionUID = 1L;
 

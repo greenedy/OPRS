@@ -31,7 +31,7 @@ import javax.persistence.TemporalType;
  * @author green
  */
 @Entity
-@Table(name="Property")
+@Table(name="PropertyTeam7")
 public class Property implements Serializable {
     private static long serialVersionUID = 1L;
 

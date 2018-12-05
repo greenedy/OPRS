@@ -21,7 +21,7 @@ import javax.persistence.Table;
  * @author green
  */
 @Entity
-@Table(name="Image")
+@Table(name="ImageTeam7")
 public class Image implements Serializable {
     private static final long serialVersionUID = 1L;
     @Id
