@@ -100,6 +100,11 @@ public class PropertyDBHelper {
         return performQuery(query);
     }
 
+    public static List<Property> getOwenedProperties(EntityManager em, String userId){
+        String queryString = "SELECT p FROM Property p WHERE p.ownerId = '" + userId +"'";
+        Query ownerQuery = em.createQuery(queryString);
+        return performQuery(ownerQuery);
+    }
     
     private static List<Property> performQuery(final Query query) {
         List<Property> resultList = query.getResultList();
@@ -110,5 +115,7 @@ public class PropertyDBHelper {
         results.addAll(resultList);
         return results;
     }
+    
+    
 
 }

@@ -145,6 +145,10 @@ public class MenuView {
         model.addElement(firstSubmenu);
         
         DefaultSubMenu secondSubmenu = new DefaultSubMenu(user.getFirstname()+" "+user.getLastname());
+        
+        DefaultMenuItem itemOwnerViewProperties = new DefaultMenuItem("View Owned Properties");
+        itemOwnerViewProperties.setOutcome("ownerViewProperties");
+        secondSubmenu.addElement(itemOwnerViewProperties);
  
         DefaultMenuItem itemViewAccount = new DefaultMenuItem("View Account");
         itemViewAccount.setOutcome("viewAccount");
