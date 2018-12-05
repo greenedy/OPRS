@@ -12,7 +12,7 @@
         <ui:define name="content">
             <h:form>
             <h:panelGroup id="results">
-                <h:dataTable rendered="#{VisitingListBean.showResults}"  border="2" bgcolor="green" id="resultTable" value="#{searchProperties.lookupResults}" var="property">
+                <h:dataTable rendered="#{VisitingListBean.showResults}"  border="2" bgcolor="#33ccff" id="resultTable" value="#{searchProperties.lookupResults}" var="property">
                 <h:column>
                     <f:facet name="header">Property ID</f:facet>
                     #{property.propertyId}
@@ -58,12 +58,14 @@
             </h:form>
             <h:form>
                 <h:panelGrid columns="2" >
-                    <h:outputText value="The propertyId field of the property you would like to add: " escape="false"/>
+                    <h:outputText value="The propertyId field of the property you would like to add to your visiting list: " escape="false"/>
                     <h:inputText value="#{VisitingListBean.propertyId}" />
                 </h:panelGrid>
                     <hr></hr>
                     <h:commandButton value="Add" action="#{VisitingListBean.addToVisitingList}"></h:commandButton>
              </h:form>
+            <h:outputText rendered="#{VisitingListBean.addedSuccessfully}" style="color:green" id="resultMessageSuccess" value="Added Successfully"/>
+            <h:outputText rendered="#{VisitingListBean.addedUnsuccessfully}" style="color:red" id="resultMessageFail" value="Added Unsuccessfully"/>
      
         </ui:define>
         </ui:composition>

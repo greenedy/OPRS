@@ -34,6 +34,8 @@ public class VisitingListBean implements Serializable {
     @Resource
     private javax.transaction.UserTransaction utx;
     private Boolean propertyFound = false;
+    private Boolean addedSuccessfully;
+    private Boolean addedUnsuccessfully;
     
     public String addToVisitingListTest(){
         try {
@@ -57,8 +59,15 @@ public class VisitingListBean implements Serializable {
     }
     
     public String addToVisitingList(){
-        VisitingListDBHelper.addToVisitingList(utx, em, propertyId);
-        return("index");
+        try{
+            VisitingListDBHelper.addToVisitingList(utx, em, propertyId);
+            setAddedSuccessfully((Boolean) true);
+            setAddedUnsuccessfully((Boolean) false);
+        }catch(RuntimeException e){
+            setAddedSuccessfully((Boolean) false);
+            setAddedUnsuccessfully((Boolean) true);
+        }
+        return(null);
     }
     
     public String doNothing(){
@@ -76,6 +85,34 @@ public class VisitingListBean implements Serializable {
      */
     public String getPropertyId() {
         return propertyId;
+    }
+
+    /**
+     * @return the addedSuccessfully
+     */
+    public Boolean getAddedSuccessfully() {
+        return addedSuccessfully;
+    }
+
+    /**
+     * @param addedSuccessfully the addedSuccessfully to set
+     */
+    public void setAddedSuccessfully(Boolean addedSuccessfully) {
+        this.addedSuccessfully = addedSuccessfully;
+    }
+
+    /**
+     * @return the addedUnsuccessfully
+     */
+    public Boolean getAddedUnsuccessfully() {
+        return addedUnsuccessfully;
+    }
+
+    /**
+     * @param addedUnsuccessfully the addedUnsuccessfully to set
+     */
+    public void setAddedUnsuccessfully(Boolean addedUnsuccessfully) {
+        this.addedUnsuccessfully = addedUnsuccessfully;
     }
 
     /**
