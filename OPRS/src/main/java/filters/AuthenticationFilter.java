@@ -84,6 +84,18 @@ public class AuthenticationFilter implements Filter {
                 String loginURL = req.getContextPath() + "/faces/login.xhtml";
                 res.sendRedirect(loginURL);
              }
+        } else if (reqURI.contains("viewViewingList") && (ses == null || (ses != null && ses.getAttribute("User") == null))) {
+            String loginURL = req.getContextPath() + "/faces/login.xhtml";
+            res.sendRedirect(loginURL);
+        } else if (reqURI.contains("viewViewingList") && (ses == null || (ses != null && ses.getAttribute("User") != null))) {
+            UserAccount user =(UserAccount) ses.getAttribute("User");
+             if(user.getUserType().equals(UserType.CUSTOMER)){
+                 chain.doFilter(request, response);
+             }
+             else{
+                String loginURL = req.getContextPath() + "/faces/login.xhtml";
+                res.sendRedirect(loginURL);
+             }
         } else{
             chain.doFilter(request, response);
         }  

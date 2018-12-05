@@ -110,6 +110,10 @@ public class MenuView {
         
         DefaultSubMenu secondSubmenu = new DefaultSubMenu(user.getFirstname()+" "+user.getLastname());
         
+        DefaultMenuItem itemViewViewingList = new DefaultMenuItem("View Viewing List");
+        itemViewViewingList.setOutcome("viewViewingList");
+        secondSubmenu.addElement(itemViewViewingList);
+        
         DefaultMenuItem itemViewAccount = new DefaultMenuItem("View Account");
         itemViewAccount.setOutcome("viewAccount");
         secondSubmenu.addElement(itemViewAccount);
