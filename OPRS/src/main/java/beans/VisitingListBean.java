@@ -71,10 +71,6 @@ public class VisitingListBean implements Serializable {
         return(null);
     }
     
-    public String doNothing(){
-        System.out.println("");
-        return("index");
-    }
     
     // show results if any
     public boolean getShowResults() {
