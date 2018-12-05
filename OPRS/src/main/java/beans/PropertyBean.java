@@ -27,6 +27,7 @@ import javax.faces.event.PhaseId;
 import javax.inject.Named;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.servlet.http.HttpSession;
 import org.apache.commons.io.IOUtils;
 import org.primefaces.event.FileUploadEvent;
 import org.primefaces.model.DefaultStreamedContent;
@@ -34,6 +35,7 @@ import org.primefaces.model.StreamedContent;
 import org.primefaces.model.UploadedFile;
 import persistence.Address;
 import persistence.Property;
+import persistence.UserAccount;
 
 
 /**
@@ -65,7 +67,7 @@ public class PropertyBean implements Serializable {
         }
     }
     
-    private String owner;
+    private String ownerId;
     private String type;
     private int numTotalRooms;
     private int numBathrooms;
@@ -195,12 +197,12 @@ public class PropertyBean implements Serializable {
     public String getDescription() {
         return description;
     }
-   public String getOwner() {
-        return owner;
+   public String getOwnerId() {
+        return ownerId;
     }
     
-     public void setOwner(String owner) {
-        this.owner = owner;
+     public void setOwnerId(String ownerId) {
+        this.ownerId = ownerId;
     }
 
     public double getPriceOfRent() {
@@ -342,8 +344,12 @@ public class PropertyBean implements Serializable {
      * @return 
      */
     public String doAddProperty() {
+        
+        HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+        UserAccount u = (UserAccount) session.getAttribute("User");
+        
         Address address = new Address(number, street, unit, city, province, postalCode);
-        Property property = new Property(owner, type, numTotalRooms, numBathrooms, numBedrooms, availableDate, address, description, priceOfRent);
+        Property property = new Property(u.getUserId(), type, numTotalRooms, numBathrooms, numBedrooms, availableDate, address, description, priceOfRent);
         for (Image p: images.values()) {
             persistence.Image pim = new persistence.Image(p.getContents(),p.getType());
             pim.setProperty(property);
@@ -362,33 +368,10 @@ public class PropertyBean implements Serializable {
            FacesContext.getCurrentInstance().getExternalContext()
                 .getFlash().setKeepMessages(true);
         }
-        return "viewProperty?faces-redirect=true&propertyId="+property.getPropertyId()+"";
-    }
-    
-       public String doUpdateProperty(ActionEvent actionEvent) {
-        Address address = new Address(number, street, unit, city, province, postalCode);
-        Property property = new Property(owner, type, numTotalRooms, numBathrooms, numBedrooms, availableDate, address, description, priceOfRent);
-        for (Image p: images.values()) {
-            persistence.Image pim = new persistence.Image(p.getContents(),p.getType());
-            pim.setProperty(property);
-            property.addPicture(pim);
-        }
-        try {
-           persist(property); 
-           String msg = "Property Updated Successfully";
-           FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, msg, msg));
-           FacesContext.getCurrentInstance().getExternalContext()
-                .getFlash().setKeepMessages(true);
-           FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-           FacesContext.getCurrentInstance().getViewRoot().getViewMap().clear();
-        } catch(RuntimeException e) {
-           String msg = "Error While Updating Property";
-           FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, msg, msg));
-           FacesContext.getCurrentInstance().getExternalContext()
-                .getFlash().setKeepMessages(true);
-        }
         return null;
     }
+    
+      
 
     public void persist(Object object) {
         try {

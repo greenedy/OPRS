@@ -51,7 +51,7 @@ public class Property implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private String propertyId;
-    private String owner;
+    private String ownerId;
     private String type;
     private double priceOfRent;
     private int numTotalRooms;
@@ -76,10 +76,10 @@ public class Property implements Serializable {
         
     }
     
-    public Property(String owner, String type, int numTotalRooms, 
+    public Property(String ownerId, String type, int numTotalRooms, 
             int numBathrooms, int numBedrooms, Date availableDate, Address address,
             String description, double priceOfRent) {
-        this.owner = owner;
+        this.ownerId = ownerId;
         this.type = type;
         this.numTotalRooms = numTotalRooms;
         this.numBathrooms = numBathrooms;
@@ -125,17 +125,17 @@ public class Property implements Serializable {
     }
 
     /**
-     * @return the owner
+     * @return the ownerId
      */
-    public String getOwner() {
-        return owner;
+    public String getOwnerId() {
+        return ownerId;
     }
 
     /**
-     * @param owner the owner to set
+     * @param ownerId the owner to set
      */
-    public void setOwner(String owner) {
-        this.owner = owner;
+    public void setOwnerId(String ownerId) {
+        this.ownerId = ownerId;
     }
 
     /**

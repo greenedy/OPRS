@@ -120,7 +120,7 @@ public class viewPropertyBean implements Serializable {
     public void onload() {
     
        property = PropertyDBHelper.findProperty(em, Long.toString(propertyId));  
-       this.owner = property.getOwner();
+       this.owner = property.getOwnerId();
        this.type = property.getType();
        this.numTotalRooms = property.getNumTotalRooms();
        this.numBathrooms = property.getNumBathrooms();
@@ -152,7 +152,7 @@ public class viewPropertyBean implements Serializable {
                 }
                 
             }
-            else if(user.getUserType().equals(UserType.OWNER)){
+            else if(user.getUserType().equals(UserType.OWNER) && user.getUserId().equals(property.getOwnerId())){
                 
                 showUpdate=true;
                 showDelete=true;

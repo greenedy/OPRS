@@ -57,7 +57,7 @@
         </navigation-case>
         <navigation-case>
             <from-outcome>addProperty</from-outcome>
-            <to-view-id>/addProperty2.xhtml</to-view-id>
+            <to-view-id>/addProperty.xhtml</to-view-id>
         </navigation-case>
         <navigation-case>
             <from-outcome>viewAccount</from-outcome>
@@ -92,7 +92,7 @@
         </navigation-case>
         <navigation-case>
             <from-outcome>addProperty</from-outcome>
-            <to-view-id>/addProperty2.xhtml</to-view-id>
+            <to-view-id>/addProperty.xhtml</to-view-id>
         </navigation-case>
         <navigation-case>
             <from-outcome>viewAccount</from-outcome>
@@ -127,7 +127,7 @@
         </navigation-case>
         <navigation-case>
             <from-outcome>addProperty</from-outcome>
-            <to-view-id>/addProperty2.xhtml</to-view-id>
+            <to-view-id>/addProperty.xhtml</to-view-id>
         </navigation-case>
         <navigation-case>
             <from-outcome>viewAccount</from-outcome>
@@ -158,7 +158,7 @@
         </navigation-case>
         <navigation-case>
             <from-outcome>addProperty</from-outcome>
-            <to-view-id>/addProperty2.xhtml</to-view-id>
+            <to-view-id>/addProperty.xhtml</to-view-id>
         </navigation-case>
         <navigation-case>
             <from-outcome>viewAccount</from-outcome>
@@ -189,7 +189,7 @@
         </navigation-case>
         <navigation-case>
             <from-outcome>addProperty</from-outcome>
-            <to-view-id>/addProperty2.xhtml</to-view-id>
+            <to-view-id>/addProperty.xhtml</to-view-id>
         </navigation-case>
         <navigation-case>
             <from-outcome>viewAccount</from-outcome>
@@ -220,7 +220,7 @@
         </navigation-case>
         <navigation-case>
             <from-outcome>addProperty</from-outcome>
-            <to-view-id>/addProperty2.xhtml</to-view-id>
+            <to-view-id>/addProperty.xhtml</to-view-id>
         </navigation-case>
         <navigation-case>
             <from-outcome>viewAccount</from-outcome>
@@ -251,7 +251,7 @@
         </navigation-case>
         <navigation-case>
             <from-outcome>addProperty</from-outcome>
-            <to-view-id>/addProperty2.xhtml</to-view-id>
+            <to-view-id>/addProperty.xhtml</to-view-id>
         </navigation-case>
         <navigation-case>
             <from-outcome>viewAccount</from-outcome>
@@ -282,7 +282,7 @@
         </navigation-case>
         <navigation-case>
             <from-outcome>addProperty</from-outcome>
-            <to-view-id>/addProperty2.xhtml</to-view-id>
+            <to-view-id>/addProperty.xhtml</to-view-id>
         </navigation-case>
         <navigation-case>
             <from-outcome>viewAccount</from-outcome>

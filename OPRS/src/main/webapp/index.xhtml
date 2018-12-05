@@ -6,10 +6,10 @@
       xmlns:p="http://primefaces.org/ui"
       xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
     <h:head>
-        <title>OPS Title</title>
+        <title>OPRS Title</title>
     </h:head>
     <h:head>
-        <title>OPS Facelet</title>
+        <title>OPRS Facelet</title>
     </h:head>
 
     <center>
@@ -21,19 +21,12 @@
         <f:view>
             
             <h:form>
-               
-                <h:panelGrid columns="9">
-                    <h:button value="Public Page" outcome="/public/welcomePublic"/>
-                    <h:button value="Private Page" outcome="/protected/welcomeProtected"/>
-                    <h:button value="Create Account" outcome="signIn"/>
-                    <h:button value="Log In" outcome="login"/>
-                    <h:button value="Add Property" outcome="addProperty"/>
-                    <h:button value="Add Property2" outcome="addProperty2"/>
-                    <h:button value="Search Properties" outcome="searchProperties"/>
-                    <h:button value="ViewAccount" outcome="viewAccount"/>
-                    <h:button value="Testing Add To Visiting List Use Case" outcome="addToVisitingList"/>
-
+                
+                   <h:panelGrid columns="1" >
+                    <h:button value="Create Account For Testing" outcome="signIn"/>
+                    
                 </h:panelGrid>
+              
             </h:form>
             <h:graphicImage value="/graphics/home.png"/>
         </f:view>
